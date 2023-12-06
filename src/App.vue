@@ -23,6 +23,7 @@
       <div :class="['slide', 'right-slide', rightSlideVis ? 'close' : undefined]">
         <div class="config-box">
           <canvas-size></canvas-size>
+          <canvas-color></canvas-color>
         </div>
         <div class="toggle" @click="changeRightToggle">
           <svg-icon :iconname="rightSlideVis ? 'sanjiaoleft' : 'sanjiaoright'"></svg-icon>
@@ -38,6 +39,7 @@ import SvgIcon from "@/components/SvgIcon.vue";
 import { useCanvasStore } from "@/store/modules/canvas";
 import { fabric } from "fabric";
 import CanvasSize from "@/components/CanvasSize.vue";
+import CanvasColor from "@/components/CanvasColor.vue";
 const casStore = useCanvasStore();
 const leftSlideVis = ref(false);
 const rightSlideVis = ref(false);

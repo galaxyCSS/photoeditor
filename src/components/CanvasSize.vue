@@ -2,7 +2,7 @@
  * @Author: 陈三石
  * @Date: 2023-12-06 14:33:03
  * @LastEditors: 陈三石
- * @LastEditTime: 2023-12-06 17:38:22
+ * @LastEditTime: 2023-12-06 17:44:55
  * @Description: 'file content'
 -->
 <template>
@@ -30,10 +30,9 @@ import { ref, onMounted } from "vue";
 import { useCanvasStore } from "@/store/modules/canvas";
 const casStore = useCanvasStore();
 let zoom = 0.03;
-let rect;
 const sizes = [
   { w: 900, h: 1200, scale: 0.6 },
-  { w: 1200, h: 900, scale: 0.6 },
+  { w: 1200, h: 900, scale: 0.8 },
   { w: 1080, h: 1920, scale: 0.4 },
   { w: 1280, h: 860, scale: 0.8 },
   { w: 860, h: 1280, scale: 0.6 }
