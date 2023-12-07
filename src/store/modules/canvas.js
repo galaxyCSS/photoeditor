@@ -2,7 +2,7 @@
  * @Author: 陈三石
  * @Date: 2023-12-06 13:58:44
  * @LastEditors: 陈三石
- * @LastEditTime: 2023-12-07 10:46:03
+ * @LastEditTime: 2023-12-07 13:39:45
  * @Description: 'file content'
  */
 import { defineStore } from "pinia";
@@ -16,6 +16,6 @@ export const useCanvasStore = defineStore("canvasEditor", {
       fill: "#fff"
     },
     containerObj: null,
-    editType: ""
+    editType: "shape"
   })
 });

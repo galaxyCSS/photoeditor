@@ -2,7 +2,14 @@
  * @Author: 陈三石
  * @Date: 2023-12-06 10:49:12
  * @LastEditors: 陈三石
- * @LastEditTime: 2023-12-07 10:29:17
+ * @LastEditTime: 2023-12-07 13:39:22
+ * @Description: 'file content'
+-->
+<!--
+ * @Author: 陈三石
+ * @Date: 2023-12-06 10:49:12
+ * @LastEditors: 陈三石
+ * @LastEditTime: 2023-12-07 11:25:21
  * @Description: 'file content'
 -->
 <template>
@@ -24,6 +31,9 @@
         </div>
         <div class="toggle" @click="changeLeftToggle">
           <svg-icon :iconname="leftSlideVis ? 'sanjiaoright' : 'sanjiaoleft'"></svg-icon>
+        </div>
+        <div class="editor-box">
+          <shape-editor v-if="casStore.editType === 'shape'"></shape-editor>
         </div>
       </div>
       <div class="canvas-box">
@@ -50,8 +60,9 @@ import { useCanvasStore } from "@/store/modules/canvas";
 import { fabric } from "fabric";
 import CanvasSize from "@/components/CanvasSize.vue";
 import CanvasColor from "@/components/CanvasColor.vue";
-import CanvasSizeControl from "./components/CanvasSizeControl.vue";
-import EditorTab from "./components/EditorTab.vue";
+import CanvasSizeControl from "@/components/CanvasSizeControl.vue";
+import ShapeEditor from "@/components/editor/ShapeEditor.vue";
+import EditorTab from "@/components/EditorTab.vue";
 const casStore = useCanvasStore();
 const leftSlideVis = ref(false);
 const rightSlideVis = ref(false);
@@ -195,20 +206,28 @@ function save() {
         justify-content: center;
         align-items: center;
         background: #fff;
+        z-index: 1;
       }
       &.left-slide {
         box-shadow: -1px 9px 5px #999;
+        display: flex;
         &.close {
           width: 50px;
+          .editor-box {
+            display: none;
+          }
         }
         .options-bar {
-          position: absolute;
           width: 50px;
           height: 100%;
           border-right: 1px solid #eee;
         }
         .toggle {
           right: -15px;
+        }
+        .editor-box {
+          flex: 1;
+          padding: 15px;
         }
       }
       &.right-slide {

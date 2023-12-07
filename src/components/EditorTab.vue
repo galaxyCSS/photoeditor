@@ -28,8 +28,7 @@ import SvgIcon from "@/components/SvgIcon.vue";
 import { useCanvasStore } from "@/store/modules/canvas";
 const casStore = useCanvasStore();
 function setEditor(type) {
-  const { editType } = casStore;
-  editType = type;
+  casStore.editType = type;
 }
 </script>
 
