@@ -43,7 +43,9 @@ function createRectShape() {
   const rect = new fabric.Rect({
     fill: "#1890ff",
     width: 100,
-    height: 100
+    height: 100,
+    originX: "center",
+    originY: "center"
   });
   canvas.add(rect);
   rect.type = "shape";
