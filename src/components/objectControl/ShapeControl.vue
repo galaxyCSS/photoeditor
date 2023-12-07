@@ -2,7 +2,7 @@
  * @Author: 陈三石
  * @Date: 2023-12-07 15:44:50
  * @LastEditors: 陈三石
- * @LastEditTime: 2023-12-07 17:06:57
+ * @LastEditTime: 2023-12-07 17:41:03
  * @Description: 'file content'
 -->
 <template>
@@ -56,7 +56,7 @@
 </template>
 
 <script setup>
-import { onMounted, reactive, ref } from "vue";
+import { onMounted, reactive, ref, watch } from "vue";
 import { useCanvasStore } from "@/store/modules/canvas";
 import { ArrowDown } from "@element-plus/icons-vue";
 const casStore = useCanvasStore();
@@ -69,15 +69,24 @@ const state = reactive({
   angle: 1,
   scale: 1
 });
+watch(
+  () => casStore.selectedObj,
+  newState => {
+    initStyle(newState[0]);
+  }
+);
 onMounted(() => {
-  let selected = casStore.selectedObj[0];
+  initStyle(casStore.selectedObj[0]);
+});
+function initStyle(selectObj) {
+  let selected = selectObj;
   state.fill = selected.fill;
   state.stroke = selected.stroke;
   state.strokeWidth = selected.strokeWidth;
   state.rxry = selected.rx || 1;
   state.angle = selected.angle || 1;
-  state.scale = selected.scale;
-});
+  state.scale = selected.scaleX;
+}
 function fillChange(fill) {
   const { canvas } = casStore;
   let selected = casStore.selectedObj[0];

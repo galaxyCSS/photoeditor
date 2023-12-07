@@ -2,7 +2,7 @@
  * @Author: 陈三石
  * @Date: 2023-12-06 10:49:12
  * @LastEditors: 陈三石
- * @LastEditTime: 2023-12-07 16:19:01
+ * @LastEditTime: 2023-12-07 17:19:15
  * @Description: 'file content'
 -->
 <template>
@@ -63,12 +63,7 @@ import ShapeControl from "@/components/objectControl/ShapeControl.vue";
 const casStore = useCanvasStore();
 const leftSlideVis = ref(false);
 const rightSlideVis = ref(false);
-watch(
-  () => casStore.selectedObj,
-  newState => {
-    console.log(newState);
-  }
-);
+
 const controlType = computed(() => {
   if (casStore.selectedObj.length === 0) {
     return "";

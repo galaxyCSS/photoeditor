@@ -4,13 +4,13 @@
       <div class="item" @click="createShape('rect')">
         <svg-icon iconname="juxing"></svg-icon>
       </div>
-      <div class="item">
+      <div class="item" @click="createShape('triangle')">
         <svg-icon iconname="xingzhuang-sanjiaoxing"></svg-icon>
       </div>
       <div class="item">
         <svg-icon iconname="tuoyuanxing"></svg-icon>
       </div>
-      <div class="item">
+      <div class="item" @click="createShape('circle')">
         <svg-icon iconname="yuanxingweixuanzhong"></svg-icon>
       </div>
     </div>
@@ -26,17 +26,27 @@ function createShape(shape) {
   const { canvas } = casStore;
   canvas.on("selection:created", onSelectionCreated);
   canvas.on("selection:cleared", onSelectionCleared);
+  canvas.on("selection:updated", onSelectionUpdated);
   switch (shape) {
     case "rect":
       createRectShape();
       break;
+    case "triangle":
+      createTriangleShape();
+      break;
+    case "circle":
+      createCircleShape();
+      break;
   }
 }
 function onSelectionCreated(opt) {
-  casStore.selectedObj = markRaw(opt.selected);
+  casStore.selectedObj = opt.selected;
 }
 function onSelectionCleared() {
   casStore.selectedObj = markRaw([]);
+}
+function onSelectionUpdated(opt) {
+  casStore.selectedObj = opt.selected;
 }
 function createRectShape() {
   const { canvas } = casStore;
@@ -50,6 +60,31 @@ function createRectShape() {
   canvas.add(rect);
   rect.type = "shape";
   rect.center();
+}
+function createTriangleShape() {
+  const { canvas } = casStore;
+  const triangle = new fabric.Triangle({
+    width: 80,
+    height: 100,
+    fill: "#1890ff",
+    originX: "center",
+    originY: "center"
+  });
+  canvas.add(triangle);
+  triangle.type = "shape";
+  triangle.center();
+}
+function createCircleShape() {
+  const { canvas } = casStore;
+  const circle = new fabric.Circle({
+    radius: 50,
+    fill: "#1890ff",
+    originX: "center",
+    originY: "center"
+  });
+  canvas.add(circle);
+  circle.type = "shape";
+  circle.center();
 }
 </script>
 
