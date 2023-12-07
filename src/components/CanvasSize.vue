@@ -2,7 +2,7 @@
  * @Author: 陈三石
  * @Date: 2023-12-06 14:33:03
  * @LastEditors: 陈三石
- * @LastEditTime: 2023-12-06 17:44:55
+ * @LastEditTime: 2023-12-07 09:15:27
  * @Description: 'file content'
 -->
 <template>
@@ -43,7 +43,7 @@ function changeSize(item, index) {
   currSize.value = index;
   canvas.remove(containerObj);
   let rect = new fabric.Rect({
-    fill: "#fff",
+    fill: containerObj.fill,
     width: item.w * item.scale,
     height: item.h * item.scale
   });
