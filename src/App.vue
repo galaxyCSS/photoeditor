@@ -19,6 +19,7 @@
       </div>
       <div class="canvas-box">
         <canvas id="cas" width="1200" height="800"></canvas>
+        <canvas-size-control></canvas-size-control>
       </div>
       <div :class="['slide', 'right-slide', rightSlideVis ? 'close' : undefined]">
         <div class="config-box">
@@ -40,6 +41,7 @@ import { useCanvasStore } from "@/store/modules/canvas";
 import { fabric } from "fabric";
 import CanvasSize from "@/components/CanvasSize.vue";
 import CanvasColor from "@/components/CanvasColor.vue";
+import CanvasSizeControl from "./components/CanvasSizeControl.vue";
 const casStore = useCanvasStore();
 const leftSlideVis = ref(false);
 const rightSlideVis = ref(false);
@@ -53,8 +55,14 @@ function changeRightToggle() {
   rightSlideVis.value = !rightSlideVis.value;
 }
 function init() {
-  const { container } = casStore;
   const canvas = new fabric.Canvas("cas");
+  canvas.zoom = 1;
+  casStore.canvas = canvas;
+  initSize(canvas);
+  initEvent(canvas);
+}
+function initSize(canvas) {
+  const { container } = casStore;
   const rect = new fabric.Rect({
     fill: container.fill,
     width: container.w * container.scale,
@@ -63,12 +71,63 @@ function init() {
   canvas.add(rect);
   rect.center();
   rect.selectable = false;
-  casStore.canvas = canvas;
   casStore.containerObj = rect;
 }
+function initEvent(canvas) {
+  canvas.on("mouse:wheel", opt => onMouseWheel(opt, canvas));
+  canvas.on("mouse:down", opt => onMouseDown(opt, canvas));
+  canvas.on("mouse:move", opt => onMouseMove(opt, canvas));
+  canvas.on("mouse:up", opt => onMouseUp(opt, canvas));
+}
+function onMouseDown(opt, canvas) {
+  let evt = opt.e;
+  if (evt.altKey === true) {
+    canvas.isDragging = true;
+    canvas.lastPosX = evt.offsetX;
+    canvas.lastPosY = evt.offsetY;
+  }
+}
 
+function onMouseMove(opt, canvas) {
+  if (canvas.isDragging) {
+    let evt = opt.e;
+    let vpt = canvas.viewportTransform;
+    vpt[4] += evt.offsetX - canvas.lastPosX;
+    vpt[5] += evt.offsetY - canvas.lastPosY;
+    canvas.requestRenderAll();
+    canvas.lastPosX = evt.offsetX;
+    canvas.lastPosY = evt.offsetY;
+  }
+}
+
+function onMouseUp(opt, canvas) {
+  canvas.setViewportTransform(canvas.viewportTransform);
+  canvas.isDragging = false;
+}
+function onMouseWheel(opt, canvas) {
+  let delta = opt.e.deltaY;
+  let zoom = canvas.getZoom();
+  zoom *= 0.999 ** delta;
+  if (zoom > 20) zoom = 20;
+  if (zoom < 0.01) zoom = 0.01;
+  canvas.zoomToPoint(
+    {
+      x: 600,
+      y: 400
+    },
+    zoom
+  );
+  canvas.zoom = zoom;
+}
 function save() {
   const { container, canvas } = casStore;
+  // 恢复缩放
+  canvas.setZoom(1);
+  // 恢复平移
+  let vpt = canvas.viewportTransform;
+  vpt[4] = 0;
+  vpt[5] = 0;
+  canvas.requestRenderAll();
   let photoUrl = canvas.toDataURL({
     format: "jpeg",
     quality: 1,
@@ -161,6 +220,7 @@ function save() {
       display: flex;
       justify-content: center;
       align-items: center;
+      position: relative;
     }
   }
 }
