@@ -7,7 +7,7 @@
       <div class="item" @click="createShape('triangle')">
         <svg-icon iconname="xingzhuang-sanjiaoxing"></svg-icon>
       </div>
-      <div class="item">
+      <div class="item" @click="createShape('ellipse')">
         <svg-icon iconname="tuoyuanxing"></svg-icon>
       </div>
       <div class="item" @click="createShape('circle')">
@@ -36,6 +36,9 @@ function createShape(shape) {
       break;
     case "circle":
       createCircleShape();
+      break;
+    case "ellipse":
+      createEllipseShape();
       break;
   }
 }
@@ -85,6 +88,19 @@ function createCircleShape() {
   canvas.add(circle);
   circle.type = "shape";
   circle.center();
+}
+function createEllipseShape() {
+  const { canvas } = casStore;
+  const ellipse = new fabric.Ellipse({
+    fill: "#1890ff",
+    rx: 70,
+    ry: 30,
+    originX: "center",
+    originY: "center"
+  });
+  canvas.add(ellipse);
+  ellipse.type = "shape";
+  ellipse.center();
 }
 </script>
 
