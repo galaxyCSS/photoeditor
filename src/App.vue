@@ -1,3 +1,10 @@
+<!--
+ * @Author: 陈三石
+ * @Date: 2023-12-06 10:49:12
+ * @LastEditors: 陈三石
+ * @LastEditTime: 2023-12-07 10:29:17
+ * @Description: 'file content'
+-->
 <template>
   <div class="layout">
     <div class="header">
@@ -12,7 +19,9 @@
     </div>
     <div class="content">
       <div :class="['slide', 'left-slide', leftSlideVis ? 'close' : undefined]">
-        <div class="options-bar"></div>
+        <div class="options-bar">
+          <editor-tab></editor-tab>
+        </div>
         <div class="toggle" @click="changeLeftToggle">
           <svg-icon :iconname="leftSlideVis ? 'sanjiaoright' : 'sanjiaoleft'"></svg-icon>
         </div>
@@ -42,6 +51,7 @@ import { fabric } from "fabric";
 import CanvasSize from "@/components/CanvasSize.vue";
 import CanvasColor from "@/components/CanvasColor.vue";
 import CanvasSizeControl from "./components/CanvasSizeControl.vue";
+import EditorTab from "./components/EditorTab.vue";
 const casStore = useCanvasStore();
 const leftSlideVis = ref(false);
 const rightSlideVis = ref(false);
