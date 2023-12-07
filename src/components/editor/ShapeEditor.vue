@@ -1,7 +1,7 @@
 <template>
   <div class="shape-editor">
     <div class="list">
-      <div class="item">
+      <div class="item" @click="createShape('rect')">
         <svg-icon iconname="juxing"></svg-icon>
       </div>
       <div class="item">
@@ -19,6 +19,26 @@
 
 <script setup>
 import SvgIcon from "@/components/SvgIcon.vue";
+import { useCanvasStore } from "@/store/modules/canvas";
+
+const casStore = useCanvasStore();
+function createShape(shape) {
+  switch (shape) {
+    case "rect":
+      createRectShape();
+      break;
+  }
+}
+function createRectShape() {
+  const { canvas } = casStore;
+  const rect = new fabric.Rect({
+    fill: "#1890ff",
+    width: 100,
+    height: 100
+  });
+  canvas.add(rect);
+  rect.center();
+}
 </script>
 
 <style lang="postcss" scoped>

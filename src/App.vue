@@ -2,7 +2,7 @@
  * @Author: 陈三石
  * @Date: 2023-12-06 10:49:12
  * @LastEditors: 陈三石
- * @LastEditTime: 2023-12-07 13:39:22
+ * @LastEditTime: 2023-12-07 15:33:31
  * @Description: 'file content'
 -->
 <!--
@@ -54,7 +54,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from "vue";
+import { onMounted, ref, markRaw } from "vue";
 import SvgIcon from "@/components/SvgIcon.vue";
 import { useCanvasStore } from "@/store/modules/canvas";
 import { fabric } from "fabric";
@@ -78,7 +78,8 @@ function changeRightToggle() {
 function init() {
   const canvas = new fabric.Canvas("cas");
   canvas.zoom = 1;
-  casStore.canvas = canvas;
+  casStore.canvas = markRaw(canvas);
+  window.canvas = canvas;
   initSize(canvas);
   initEvent(canvas);
 }
@@ -92,7 +93,7 @@ function initSize(canvas) {
   canvas.add(rect);
   rect.center();
   rect.selectable = false;
-  casStore.containerObj = rect;
+  casStore.containerObj = markRaw(rect);
 }
 function initEvent(canvas) {
   canvas.on("mouse:wheel", opt => onMouseWheel(opt, canvas));

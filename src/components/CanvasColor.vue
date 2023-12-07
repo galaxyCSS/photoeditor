@@ -2,7 +2,7 @@
  * @Author: 陈三石
  * @Date: 2023-12-06 17:45:38
  * @LastEditors: 陈三石
- * @LastEditTime: 2023-12-07 09:28:10
+ * @LastEditTime: 2023-12-07 15:27:55
  * @Description: 'file content'
 -->
 <template>
@@ -26,7 +26,7 @@ const colors = ["#52c41a", "#faad14", "#ff4d4f", "#1677ff"];
 function colorChange(val) {
   const { containerObj, canvas } = casStore;
   containerObj.set("fill", val);
-  canvas.renderAll();
+  canvas.requestRenderAll();
   color.value = val;
 }
 </script>

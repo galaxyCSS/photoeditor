@@ -2,7 +2,7 @@
  * @Author: 陈三石
  * @Date: 2023-12-06 14:33:03
  * @LastEditors: 陈三石
- * @LastEditTime: 2023-12-07 09:15:27
+ * @LastEditTime: 2023-12-07 15:34:37
  * @Description: 'file content'
 -->
 <template>
@@ -26,7 +26,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, markRaw } from "vue";
 import { useCanvasStore } from "@/store/modules/canvas";
 const casStore = useCanvasStore();
 let zoom = 0.03;
@@ -50,7 +50,7 @@ function changeSize(item, index) {
   rect.selectable = false;
   canvas.add(rect);
   rect.center();
-  casStore.containerObj = rect;
+  casStore.containerObj = markRaw(rect);
   casStore.container = item;
 }
 </script>
