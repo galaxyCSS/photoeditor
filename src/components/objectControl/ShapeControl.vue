@@ -1,8 +1,8 @@
 <!--
  * @Author: 陈三石
  * @Date: 2023-12-07 15:44:50
- * @LastEditors: 陈三石
- * @LastEditTime: 2023-12-07 17:41:03
+ * @LastEditors: galaxy_css leic2088@163.com
+ * @LastEditTime: 2023-12-07 21:02:00
  * @Description: 'file content'
 -->
 <template>
@@ -52,6 +52,14 @@
         </div>
       </div>
     </div>
+    <div class="options">
+      <div class="item" @click="deleteShape">
+        <svg-icon iconname="shanchu"></svg-icon>
+      </div>
+      <div class="item" @click="copyShape">
+        <svg-icon iconname="fuzhi"></svg-icon>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -59,6 +67,7 @@
 import { onMounted, reactive, ref, watch } from "vue";
 import { useCanvasStore } from "@/store/modules/canvas";
 import { ArrowDown } from "@element-plus/icons-vue";
+import SvgIcon from "@/components/SvgIcon.vue";
 const casStore = useCanvasStore();
 const strokeWidths = [1, 2, 4, 8];
 const state = reactive({
@@ -132,11 +141,49 @@ function scaleChange(scale) {
   selected.set("scaleY", scale);
   canvas.requestRenderAll();
 }
+
+function deleteShape() {
+  const { canvas } = casStore;
+  let selected = casStore.selectedObj[0];
+  canvas.remove(selected);
+}
+function copyShape() {
+  const { canvas } = casStore;
+  canvas.getActiveObject().clone(function (cloned) {
+    paste(cloned);
+  });
+}
+
+function paste(_clipboard) {
+  const { canvas } = casStore;
+  _clipboard.clone(function (clonedObj) {
+    canvas.discardActiveObject();
+    clonedObj.set({
+      left: clonedObj.left + 10,
+      top: clonedObj.top + 10,
+      evented: true
+    });
+    if (clonedObj.type === "activeSelection") {
+      clonedObj.canvas = canvas;
+      clonedObj.forEachObject(function (obj) {
+        canvas.add(obj);
+      });
+      clonedObj.setCoords();
+    } else {
+      canvas.add(clonedObj);
+    }
+    _clipboard.top += 10;
+    _clipboard.left += 10;
+    canvas.setActiveObject(clonedObj);
+    canvas.requestRenderAll();
+  });
+}
 </script>
 
 <style lang="postcss" scoped>
 .shape-control {
   .list {
+    margin-bottom: 20px;
     .item {
       display: flex;
       align-items: center;
@@ -161,6 +208,18 @@ function scaleChange(scale) {
         border: 1px solid #eee;
         padding: 5px;
         border-radius: 5px;
+      }
+    }
+  }
+  .options {
+    display: flex;
+    border: 1px solid #eee;
+    padding: 5px;
+    .item {
+      cursor: pointer;
+      margin-right: 10px;
+      &:hover {
+        color: #1890ff;
       }
     }
   }

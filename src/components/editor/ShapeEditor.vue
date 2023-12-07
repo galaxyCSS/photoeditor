@@ -43,13 +43,13 @@ function createShape(shape) {
   }
 }
 function onSelectionCreated(opt) {
-  casStore.selectedObj = opt.selected;
+  casStore.selectedObj = markRaw(opt.selected);
 }
 function onSelectionCleared() {
   casStore.selectedObj = markRaw([]);
 }
 function onSelectionUpdated(opt) {
-  casStore.selectedObj = opt.selected;
+  casStore.selectedObj = markRaw(opt.selected);
 }
 function createRectShape() {
   const { canvas } = casStore;
