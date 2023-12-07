@@ -18,16 +18,25 @@
 </template>
 
 <script setup>
+import { markRaw } from "vue";
 import SvgIcon from "@/components/SvgIcon.vue";
 import { useCanvasStore } from "@/store/modules/canvas";
-
 const casStore = useCanvasStore();
 function createShape(shape) {
+  const { canvas } = casStore;
+  canvas.on("selection:created", onSelectionCreated);
+  canvas.on("selection:cleared", onSelectionCleared);
   switch (shape) {
     case "rect":
       createRectShape();
       break;
   }
+}
+function onSelectionCreated(opt) {
+  casStore.selectedObj = markRaw(opt.selected);
+}
+function onSelectionCleared() {
+  casStore.selectedObj = markRaw([]);
 }
 function createRectShape() {
   const { canvas } = casStore;
@@ -37,6 +46,7 @@ function createRectShape() {
     height: 100
   });
   canvas.add(rect);
+  rect.type = "shape";
   rect.center();
 }
 </script>

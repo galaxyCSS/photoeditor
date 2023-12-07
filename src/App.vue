@@ -2,7 +2,7 @@
  * @Author: 陈三石
  * @Date: 2023-12-06 10:49:12
  * @LastEditors: 陈三石
- * @LastEditTime: 2023-12-07 15:33:31
+ * @LastEditTime: 2023-12-07 16:11:08
  * @Description: 'file content'
 -->
 <!--
@@ -41,7 +41,10 @@
         <canvas-size-control></canvas-size-control>
       </div>
       <div :class="['slide', 'right-slide', rightSlideVis ? 'close' : undefined]">
-        <div class="config-box">
+        <div class="object-control" v-if="controlType">
+          <shape-control v-if="controlType === 'shape'"></shape-control>
+        </div>
+        <div class="config-box" v-else>
           <canvas-size></canvas-size>
           <canvas-color></canvas-color>
         </div>
@@ -54,18 +57,31 @@
 </template>
 
 <script setup>
-import { onMounted, ref, markRaw } from "vue";
+import { onMounted, ref, markRaw, watch, computed } from "vue";
 import SvgIcon from "@/components/SvgIcon.vue";
 import { useCanvasStore } from "@/store/modules/canvas";
 import { fabric } from "fabric";
-import CanvasSize from "@/components/CanvasSize.vue";
-import CanvasColor from "@/components/CanvasColor.vue";
-import CanvasSizeControl from "@/components/CanvasSizeControl.vue";
+import CanvasSize from "@/components/canvas/CanvasSize.vue";
+import CanvasColor from "@/components/canvas/CanvasColor.vue";
+import CanvasSizeControl from "@/components/canvas/CanvasSizeControl.vue";
 import ShapeEditor from "@/components/editor/ShapeEditor.vue";
-import EditorTab from "@/components/EditorTab.vue";
+import EditorTab from "@/components/layout/EditorTab.vue";
+import ShapeControl from "@/components/objectControl/ShapeControl.vue";
 const casStore = useCanvasStore();
 const leftSlideVis = ref(false);
 const rightSlideVis = ref(false);
+watch(
+  () => casStore.selectedObj,
+  newState => {
+    console.log(newState);
+  }
+);
+const controlType = computed(() => {
+  if (casStore.selectedObj.length === 0) {
+    return "";
+  }
+  return casStore.selectedObj[0].type;
+});
 onMounted(() => {
   init();
 });
@@ -234,6 +250,9 @@ function save() {
       &.right-slide {
         box-shadow: 1px 5px 5px #999;
         .config-box {
+          padding: 15px;
+        }
+        .object-control {
           padding: 15px;
         }
         &.close {
