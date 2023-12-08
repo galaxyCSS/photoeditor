@@ -1,8 +1,8 @@
 <!--
  * @Author: galaxy_css leic2088@163.com
  * @Date: 2023-12-08 20:28:29
- * @LastEditors: 陈三石
- * @LastEditTime: 2023-12-09 11:19:49
+ * @LastEditors: galaxy_css leic2088@163.com
+ * @LastEditTime: 2023-12-09 15:44:37
  * @FilePath: /photoeditor/src/components/canvas/CanvasBG.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -53,6 +53,13 @@ function importPhoto(url) {
     canvas.requestRenderAll();
   });
 }
+
+function onRemove() {
+  photoUrl.value = "";
+  const { canvas, containerObj } = casStore;
+  containerObj.set("fill", "#fff");
+  canvas.requestRenderAll();
+}
 </script>
 
 <style lang="postcss" scoped>
@@ -61,10 +68,7 @@ function importPhoto(url) {
 }
 .preview {
   border: 1px solid #666;
-  text-align: center;
-  padding: 10px;
-  img {
-    width: 100%;
-  }
+	text-align: center;
+	padding:10px;
 }
 </style>
