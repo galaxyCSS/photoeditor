@@ -2,7 +2,7 @@
  * @Author: 陈三石
  * @Date: 2023-12-06 10:49:12
  * @LastEditors: 陈三石
- * @LastEditTime: 2023-12-07 17:19:15
+ * @LastEditTime: 2023-12-08 09:15:05
  * @Description: 'file content'
 -->
 <template>
@@ -80,7 +80,9 @@ function changeRightToggle() {
   rightSlideVis.value = !rightSlideVis.value;
 }
 function init() {
-  const canvas = new fabric.Canvas("cas");
+  const canvas = new fabric.Canvas("cas", {
+    preserveObjectStacking: true
+  });
   canvas.zoom = 1;
   casStore.canvas = markRaw(canvas);
   window.canvas = canvas;
