@@ -2,14 +2,19 @@
  * @Author: 陈三石
  * @Date: 2023-12-06 10:49:12
  * @LastEditors: 陈三石
- * @LastEditTime: 2023-12-08 14:05:11
+ * @LastEditTime: 2023-12-08 17:36:39
  * @Description: 'file content'
 -->
 <template>
   <div class="layout">
     <div class="header">
       <div class="options">
-        <div class="options-left"></div>
+        <div class="options-left">
+          <div class="item">
+            <span class="label">绘画模式</span>
+            <el-switch v-model="casStore.isDraw" />
+          </div>
+        </div>
         <div class="options-right">
           <div class="save">
             <el-button type="primary" @click="save">保存</el-button>
@@ -28,6 +33,7 @@
         <div class="editor-box">
           <shape-editor v-if="casStore.editType === 'shape'"></shape-editor>
           <text-editor v-if="casStore.editType === 'text'"></text-editor>
+          <draw-editor v-if="casStore.editType === 'draw'"></draw-editor>
         </div>
       </div>
       <div class="canvas-box">
@@ -59,11 +65,16 @@ import { fabric } from "fabric";
 import CanvasSize from "@/components/canvas/CanvasSize.vue";
 import CanvasColor from "@/components/canvas/CanvasColor.vue";
 import CanvasSizeControl from "@/components/canvas/CanvasSizeControl.vue";
+
 import ShapeEditor from "@/components/editor/ShapeEditor.vue";
 import TextEditor from "@/components/editor/TextEditor.vue";
+import DrawEditor from "@/components/editor/DrawEditor.vue";
+
 import EditorTab from "@/components/layout/EditorTab.vue";
+
 import ShapeControl from "@/components/objectControl/ShapeControl.vue";
 import TextControl from "@/components/objectControl/TextControl.vue";
+
 const casStore = useCanvasStore();
 const leftSlideVis = ref(false);
 const rightSlideVis = ref(false);
@@ -77,6 +88,16 @@ const controlType = computed(() => {
 onMounted(() => {
   init();
 });
+watch(
+  () => casStore.isDraw,
+  newState => {
+    if (newState) {
+      casStore.canvas.isDrawingMode = true;
+    } else {
+      casStore.canvas.isDrawingMode = false;
+    }
+  }
+);
 function changeLeftToggle() {
   leftSlideVis.value = !leftSlideVis.value;
 }
@@ -192,7 +213,7 @@ function save() {
 }
 </script>
 
-<style scoped>
+<style scoped lang="postcss">
 .layout {
   display: flex;
   flex-direction: column;
@@ -208,6 +229,14 @@ function save() {
       width: 100%;
       display: flex;
       justify-content: space-between;
+    }
+    .options-left {
+      .item {
+        .label {
+          font-size: 14px;
+          margin-right: 10px;
+        }
+      }
     }
   }
   .content {
