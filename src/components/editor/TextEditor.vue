@@ -2,7 +2,7 @@
  * @Author: 陈三石
  * @Date: 2023-12-08 13:46:21
  * @LastEditors: 陈三石
- * @LastEditTime: 2023-12-08 14:45:14
+ * @LastEditTime: 2023-12-08 15:30:16
  * @Description: 'file content'
 -->
 <template>
@@ -29,6 +29,12 @@ function createText() {
     // fontStyle: "italic",
     // linethrough: true,
     // underline: true
+    // shadow: new fabric.Shadow({
+    //   color: "red",
+    //   blur: 5,
+    //   offsetX: -2,
+    //   offsetY: 10
+    // })
   });
   text.type = "text";
   canvas.add(text);

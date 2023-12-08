@@ -2,7 +2,7 @@
  * @Author: 陈三石
  * @Date: 2023-12-07 15:44:50
  * @LastEditors: 陈三石
- * @LastEditTime: 2023-12-08 14:56:28
+ * @LastEditTime: 2023-12-08 15:45:24
  * @Description: 'file content'
 -->
 <template>
@@ -38,7 +38,7 @@
         </el-dropdown>
       </div>
     </div>
-    <el-divider content-position="left">字体风格</el-divider>
+    <el-divider content-position="left">文字风格</el-divider>
     <div class="style">
       <div class="item" @click="changeStyle('fontWeight')">
         <svg-icon iconname="jiacu"></svg-icon>
@@ -51,6 +51,32 @@
       </div>
       <div class="item" @click="changeStyle('underline')">
         <svg-icon iconname="fontstrikethrough"></svg-icon>
+      </div>
+    </div>
+    <el-divider content-position="left">字体阴影</el-divider>
+    <div class="list shadow">
+      <div class="item">
+        <span class="label">阴影颜色</span>
+        <el-color-picker :model-value="state.shadow" show-alpha @change="shadowColorChange" />
+        <div :style="{ background: state.shadow }" class="color-bar"></div>
+      </div>
+      <div class="item">
+        <span class="label">模糊距离</span>
+        <div class="slider-bar">
+          <el-slider size="small" :model-value="state.blur" :max="10" @input="val => shadowChange(val, 'blur')" />
+        </div>
+      </div>
+      <div class="item">
+        <span class="label">X轴偏移</span>
+        <div class="slider-bar">
+          <el-slider size="small" :model-value="state.offsetX" :max="5" @input="val => shadowChange(val, 'offsetX')" />
+        </div>
+      </div>
+      <div class="item">
+        <span class="label">Y轴偏移</span>
+        <div class="slider-bar">
+          <el-slider size="small" :model-value="state.offsetY" :max="5" @input="val => shadowChange(val, 'offsetY')" />
+        </div>
       </div>
     </div>
     <el-divider content-position="left">操作</el-divider>
@@ -75,7 +101,11 @@ const strokeWidths = [1, 2, 3, 4];
 const state = reactive({
   fill: "",
   stroke: "",
-  strokeWidth: 1
+  strokeWidth: 1,
+  shadow: "",
+  blur: 5,
+  offsetX: 0,
+  offsetY: 0
 });
 watch(
   () => casStore.selectedObj,
@@ -91,6 +121,10 @@ function initStyle(selectObj) {
   state.fill = selected.fill;
   state.stroke = selected.stroke;
   state.strokeWidth = selected.strokeWidth;
+  state.shadow = selected.shadow?.color;
+  state.offsetX = selected.shadow?.offsetX;
+  state.blur = selected.shadow?.blur;
+  state.offsetY = selected.shadow?.offsetY;
 }
 function changeStyle(styleType) {
   const { canvas } = casStore;
@@ -106,6 +140,36 @@ function changeStyle(styleType) {
     style = state[styleType] ? true : false;
   }
   selected.set(styleType, style);
+  canvas.requestRenderAll();
+}
+function shadowColorChange(color) {
+  const { canvas } = casStore;
+  state.shadow = color;
+  state.blur = 5;
+  let selected = casStore.selectedObj[0];
+  let shadow = selected.shadow;
+  selected.set(
+    "shadow",
+    new fabric.Shadow({
+      ...shadow,
+      color,
+      blur: 5
+    })
+  );
+  canvas.requestRenderAll();
+}
+function shadowChange(val, type) {
+  const { canvas } = casStore;
+  state[type] = val;
+  let selected = casStore.selectedObj[0];
+  let shadow = selected.shadow;
+  selected.set(
+    "shadow",
+    new fabric.Shadow({
+      ...shadow,
+      [type]: val
+    })
+  );
   canvas.requestRenderAll();
 }
 function fillChange(fill) {
