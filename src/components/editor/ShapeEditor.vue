@@ -23,10 +23,6 @@ import SvgIcon from "@/components/SvgIcon.vue";
 import { useCanvasStore } from "@/store/modules/canvas";
 const casStore = useCanvasStore();
 function createShape(shape) {
-  const { canvas } = casStore;
-  canvas.on("selection:created", onSelectionCreated);
-  canvas.on("selection:cleared", onSelectionCleared);
-  canvas.on("selection:updated", onSelectionUpdated);
   switch (shape) {
     case "rect":
       createRectShape();
@@ -41,15 +37,6 @@ function createShape(shape) {
       createEllipseShape();
       break;
   }
-}
-function onSelectionCreated(opt) {
-  casStore.selectedObj = markRaw(opt.selected);
-}
-function onSelectionCleared() {
-  casStore.selectedObj = markRaw([]);
-}
-function onSelectionUpdated(opt) {
-  casStore.selectedObj = markRaw(opt.selected);
 }
 function createRectShape() {
   const { canvas } = casStore;
@@ -110,14 +97,14 @@ function createEllipseShape() {
     display: flex;
     border: 1px solid #eee;
     flex-wrap: wrap;
+    padding: 10px 15px;
+    justify-content: space-between;
     .item {
-      width: 50%;
-      height: 100px;
       display: flex;
       justify-content: center;
       align-items: center;
       cursor: pointer;
-      font-size: 40px;
+      font-size: 20px;
       &:hover {
         color: #1890ff;
       }

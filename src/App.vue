@@ -2,7 +2,7 @@
  * @Author: 陈三石
  * @Date: 2023-12-06 10:49:12
  * @LastEditors: 陈三石
- * @LastEditTime: 2023-12-08 09:15:05
+ * @LastEditTime: 2023-12-08 14:05:11
  * @Description: 'file content'
 -->
 <template>
@@ -27,6 +27,7 @@
         </div>
         <div class="editor-box">
           <shape-editor v-if="casStore.editType === 'shape'"></shape-editor>
+          <text-editor v-if="casStore.editType === 'text'"></text-editor>
         </div>
       </div>
       <div class="canvas-box">
@@ -36,6 +37,7 @@
       <div :class="['slide', 'right-slide', rightSlideVis ? 'close' : undefined]">
         <div class="object-control" v-if="controlType">
           <shape-control v-if="controlType === 'shape'"></shape-control>
+          <text-control v-if="controlType === 'text'"></text-control>
         </div>
         <div class="config-box" v-else>
           <canvas-size></canvas-size>
@@ -58,8 +60,10 @@ import CanvasSize from "@/components/canvas/CanvasSize.vue";
 import CanvasColor from "@/components/canvas/CanvasColor.vue";
 import CanvasSizeControl from "@/components/canvas/CanvasSizeControl.vue";
 import ShapeEditor from "@/components/editor/ShapeEditor.vue";
+import TextEditor from "@/components/editor/TextEditor.vue";
 import EditorTab from "@/components/layout/EditorTab.vue";
 import ShapeControl from "@/components/objectControl/ShapeControl.vue";
+import TextControl from "@/components/objectControl/TextControl.vue";
 const casStore = useCanvasStore();
 const leftSlideVis = ref(false);
 const rightSlideVis = ref(false);
@@ -106,7 +110,21 @@ function initEvent(canvas) {
   canvas.on("mouse:down", opt => onMouseDown(opt, canvas));
   canvas.on("mouse:move", opt => onMouseMove(opt, canvas));
   canvas.on("mouse:up", opt => onMouseUp(opt, canvas));
+  canvas.on("selection:created", opt => onSelectionCreated(opt, canvas));
+  canvas.on("selection:cleared", opt => onSelectionCleared(opt, canvas));
+  canvas.on("selection:updated", opt => onSelectionUpdated(opt, canvas));
 }
+
+function onSelectionCreated(opt, canvas) {
+  casStore.selectedObj = markRaw(opt.selected);
+}
+function onSelectionCleared(opt, canvas) {
+  casStore.selectedObj = markRaw([]);
+}
+function onSelectionUpdated(opt, canvas) {
+  casStore.selectedObj = markRaw(opt.selected);
+}
+
 function onMouseDown(opt, canvas) {
   let evt = opt.e;
   if (evt.altKey === true) {
