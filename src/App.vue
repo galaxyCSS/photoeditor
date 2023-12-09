@@ -2,7 +2,7 @@
  * @Author: 陈三石
  * @Date: 2023-12-06 10:49:12
  * @LastEditors: 陈三石
- * @LastEditTime: 2023-12-08 17:36:39
+ * @LastEditTime: 2023-12-09 09:03:03
  * @Description: 'file content'
 -->
 <template>
@@ -48,6 +48,7 @@
         <div class="config-box" v-else>
           <canvas-size></canvas-size>
           <canvas-color></canvas-color>
+          <canvas-bg></canvas-bg>
         </div>
         <div class="toggle" @click="changeRightToggle">
           <svg-icon :iconname="rightSlideVis ? 'sanjiaoleft' : 'sanjiaoright'"></svg-icon>
@@ -64,6 +65,7 @@ import { useCanvasStore } from "@/store/modules/canvas";
 import { fabric } from "fabric";
 import CanvasSize from "@/components/canvas/CanvasSize.vue";
 import CanvasColor from "@/components/canvas/CanvasColor.vue";
+import CanvasBg from "./components/canvas/CanvasBG.vue";
 import CanvasSizeControl from "@/components/canvas/CanvasSizeControl.vue";
 
 import ShapeEditor from "@/components/editor/ShapeEditor.vue";
