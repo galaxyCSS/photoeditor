@@ -2,7 +2,7 @@
  * @Author: 陈三石
  * @Date: 2023-12-07 15:44:50
  * @LastEditors: 陈三石
- * @LastEditTime: 2023-12-09 10:48:29
+ * @LastEditTime: 2023-12-09 11:13:38
  * @Description: 'file content'
 -->
 <template>
@@ -83,7 +83,9 @@ watch(
 );
 
 onMounted(() => {
-  initStyle(casStore.pencilBrush);
+  if (casStore.pencilBrush) {
+    initStyle(casStore.pencilBrush);
+  }
 });
 function initStyle(pencilBrush) {
   state.color = pencilBrush.color;

@@ -2,7 +2,7 @@
  * @Author: 陈三石
  * @Date: 2023-12-06 10:49:12
  * @LastEditors: 陈三石
- * @LastEditTime: 2023-12-09 11:08:21
+ * @LastEditTime: 2023-12-09 11:15:00
  * @Description: 'file content'
 -->
 <template>
@@ -44,7 +44,7 @@
         <div class="object-control" v-if="controlType || casStore.isDraw">
           <shape-control v-if="controlType === 'shape'"></shape-control>
           <text-control v-if="controlType === 'text'"></text-control>
-          <draw-control v-if="casStore.isDraw || controlType === 'path'"></draw-control>
+          <draw-control v-if="casStore.isDraw || controlType === 'path' || controlType === 'group'"></draw-control>
         </div>
         <div class="config-box" v-else>
           <canvas-size></canvas-size>
@@ -99,11 +99,6 @@ watch(
     if (newState) {
       casStore.canvas.isDrawingMode = true;
       casStore.editType = "draw";
-      let pencilBrush = new fabric.PencilBrush(canvas);
-      pencilBrush.color = "#FFC0CB";
-      pencilBrush.width = 10;
-      casStore.canvas.freeDrawingBrush = pencilBrush;
-      casStore.pencilBrush = markRaw(pencilBrush);
     } else {
       casStore.canvas.isDrawingMode = false;
       casStore.editType = "";
