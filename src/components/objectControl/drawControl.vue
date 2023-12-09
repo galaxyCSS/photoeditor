@@ -2,48 +2,58 @@
  * @Author: 陈三石
  * @Date: 2023-12-07 15:44:50
  * @LastEditors: 陈三石
- * @LastEditTime: 2023-12-09 10:33:45
+ * @LastEditTime: 2023-12-09 10:48:29
  * @Description: 'file content'
 -->
 <template>
   <div class="shape-control">
-    <el-divider content-position="left">画笔设置</el-divider>
-    <div class="list">
-      <div class="item fill-color">
-        <span class="label">画笔颜色</span>
-        <el-color-picker :model-value="state.color" show-alpha @change="fillChange" />
-        <div :style="{ background: state.color }" class="color-bar"></div>
+    <div v-if="casStore.isDraw">
+      <el-divider content-position="left">画笔设置</el-divider>
+      <div class="list">
+        <div class="item fill-color">
+          <span class="label">画笔颜色</span>
+          <el-color-picker :model-value="state.color" show-alpha @change="fillChange" />
+          <div :style="{ background: state.color }" class="color-bar"></div>
+        </div>
+        <div class="item">
+          <span class="label">画笔粗细</span>
+          <div class="slider-bar">
+            <el-slider size="small" :model-value="state.width" :min="1" :max="20" @input="widthChange" />
+          </div>
+        </div>
       </div>
-      <div class="item">
-        <span class="label">画笔粗细</span>
-        <div class="slider-bar">
-          <el-slider size="small" :model-value="state.width" :min="1" :max="20" @input="widthChange" />
+      <el-divider content-position="left">画笔阴影</el-divider>
+      <div class="list shadow">
+        <div class="item">
+          <span class="label">阴影颜色</span>
+          <el-color-picker :model-value="state.shadow" show-alpha @change="shadowColorChange" />
+          <div :style="{ background: state.shadow }" class="color-bar"></div>
+        </div>
+        <div class="item">
+          <span class="label">模糊距离</span>
+          <div class="slider-bar">
+            <el-slider size="small" :model-value="state.blur" :max="50" @input="val => shadowChange(val, 'blur')" />
+          </div>
+        </div>
+        <div class="item">
+          <span class="label">X轴偏移</span>
+          <div class="slider-bar">
+            <el-slider size="small" :model-value="state.offsetX" :max="50" @input="val => shadowChange(val, 'offsetX')" />
+          </div>
+        </div>
+        <div class="item">
+          <span class="label">Y轴偏移</span>
+          <div class="slider-bar">
+            <el-slider size="small" :model-value="state.offsetY" :max="50" @input="val => shadowChange(val, 'offsetY')" />
+          </div>
         </div>
       </div>
     </div>
-    <el-divider content-position="left">画笔阴影</el-divider>
-    <div class="list shadow">
-      <div class="item">
-        <span class="label">阴影颜色</span>
-        <el-color-picker :model-value="state.shadow" show-alpha @change="shadowColorChange" />
-        <div :style="{ background: state.shadow }" class="color-bar"></div>
-      </div>
-      <div class="item">
-        <span class="label">模糊距离</span>
-        <div class="slider-bar">
-          <el-slider size="small" :model-value="state.blur" :max="50" @input="val => shadowChange(val, 'blur')" />
-        </div>
-      </div>
-      <div class="item">
-        <span class="label">X轴偏移</span>
-        <div class="slider-bar">
-          <el-slider size="small" :model-value="state.offsetX" :max="50" @input="val => shadowChange(val, 'offsetX')" />
-        </div>
-      </div>
-      <div class="item">
-        <span class="label">Y轴偏移</span>
-        <div class="slider-bar">
-          <el-slider size="small" :model-value="state.offsetY" :max="50" @input="val => shadowChange(val, 'offsetY')" />
+    <div v-else>
+      <el-divider content-position="left">操作</el-divider>
+      <div class="options">
+        <div class="item" @click="deleteShape">
+          <svg-icon iconname="shanchu"></svg-icon>
         </div>
       </div>
     </div>
@@ -53,6 +63,7 @@
 <script setup>
 import { onMounted, reactive, ref, watch } from "vue";
 import { useCanvasStore } from "@/store/modules/canvas";
+import SvgIcon from "@/components/SvgIcon.vue";
 
 const casStore = useCanvasStore();
 
@@ -62,7 +73,7 @@ const state = reactive({
   offsetX: 0,
   offsetY: 0,
   color: "",
-  width: ""
+  width: 1
 });
 watch(
   () => casStore.pencilBrush,
@@ -110,6 +121,11 @@ function widthChange(width) {
   const { pencilBrush } = casStore;
   state.width = width;
   pencilBrush.width = width;
+}
+function deleteShape() {
+  const { canvas } = casStore;
+  let selected = casStore.selectedObj[0];
+  canvas.remove(selected);
 }
 </script>
 
