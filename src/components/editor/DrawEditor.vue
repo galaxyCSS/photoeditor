@@ -2,7 +2,7 @@
  * @Author: 陈三石
  * @Date: 2023-12-08 16:26:44
  * @LastEditors: 陈三石
- * @LastEditTime: 2023-12-08 17:37:23
+ * @LastEditTime: 2023-12-09 10:30:37
  * @Description: 'file content'
 -->
 <template>
@@ -25,6 +25,7 @@
 </template>
 
 <script setup>
+import { markRaw } from "vue";
 import SvgIcon from "@/components/SvgIcon.vue";
 import { useCanvasStore } from "@/store/modules/canvas";
 const casStore = useCanvasStore();
@@ -32,9 +33,10 @@ function initDraw(type) {
   const { canvas } = casStore;
   casStore.isDraw = true;
   let pencilBrush = new fabric[type](canvas);
-  pencilBrush.color = "pink";
+  pencilBrush.color = "#FFC0CB";
   pencilBrush.width = 10;
   canvas.freeDrawingBrush = pencilBrush;
+  casStore.pencilBrush = markRaw(pencilBrush);
 }
 </script>
 

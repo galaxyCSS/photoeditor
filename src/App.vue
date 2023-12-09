@@ -2,7 +2,7 @@
  * @Author: 陈三石
  * @Date: 2023-12-06 10:49:12
  * @LastEditors: 陈三石
- * @LastEditTime: 2023-12-09 09:03:03
+ * @LastEditTime: 2023-12-09 09:52:12
  * @Description: 'file content'
 -->
 <template>
@@ -41,15 +41,17 @@
         <canvas-size-control></canvas-size-control>
       </div>
       <div :class="['slide', 'right-slide', rightSlideVis ? 'close' : undefined]">
-        <div class="object-control" v-if="controlType">
+        <div class="object-control" v-if="controlType || casStore.isDraw">
           <shape-control v-if="controlType === 'shape'"></shape-control>
           <text-control v-if="controlType === 'text'"></text-control>
+          <draw-control v-if="casStore.isDraw"></draw-control>
         </div>
         <div class="config-box" v-else>
           <canvas-size></canvas-size>
           <canvas-color></canvas-color>
           <canvas-bg></canvas-bg>
         </div>
+
         <div class="toggle" @click="changeRightToggle">
           <svg-icon :iconname="rightSlideVis ? 'sanjiaoleft' : 'sanjiaoright'"></svg-icon>
         </div>
@@ -76,6 +78,7 @@ import EditorTab from "@/components/layout/EditorTab.vue";
 
 import ShapeControl from "@/components/objectControl/ShapeControl.vue";
 import TextControl from "@/components/objectControl/TextControl.vue";
+import DrawControl from "@/components/objectControl/DrawControl.vue";
 
 const casStore = useCanvasStore();
 const leftSlideVis = ref(false);
