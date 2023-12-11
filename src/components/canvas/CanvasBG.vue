@@ -1,8 +1,8 @@
 <!--
  * @Author: galaxy_css leic2088@163.com
  * @Date: 2023-12-08 20:28:29
- * @LastEditors: galaxy_css leic2088@163.com
- * @LastEditTime: 2023-12-09 15:44:37
+ * @LastEditors: 陈三石
+ * @LastEditTime: 2023-12-11 11:12:14
  * @FilePath: /photoeditor/src/components/canvas/CanvasBG.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -24,6 +24,7 @@
 import { ref, computed, markRaw } from "vue";
 import { useCanvasStore } from "@/store/modules/canvas";
 import { fabric } from "fabric";
+import emptyBG from "../../assets/imgs/empty.png";
 const casStore = useCanvasStore();
 const photoUrl = ref();
 
@@ -39,6 +40,7 @@ function onRemove() {
   photoUrl.value = "";
   containerObj.set("fill", "#fff");
   canvas.requestRenderAll();
+  casStore.BGUrl = emptyBG;
 }
 function importPhoto(url) {
   const { canvas, container, containerObj } = casStore;
@@ -51,14 +53,8 @@ function importPhoto(url) {
     });
     containerObj.set("fill", "transparent");
     canvas.requestRenderAll();
+    casStore.BGUrl = url;
   });
-}
-
-function onRemove() {
-  photoUrl.value = "";
-  const { canvas, containerObj } = casStore;
-  containerObj.set("fill", "#fff");
-  canvas.requestRenderAll();
 }
 </script>
 
@@ -68,7 +64,10 @@ function onRemove() {
 }
 .preview {
   border: 1px solid #666;
-	text-align: center;
-	padding:10px;
+  text-align: center;
+  padding: 10px;
+  img {
+    width: 100%;
+  }
 }
 </style>

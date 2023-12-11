@@ -2,7 +2,7 @@
  * @Author: 陈三石
  * @Date: 2023-12-06 14:33:03
  * @LastEditors: 陈三石
- * @LastEditTime: 2023-12-07 15:34:37
+ * @LastEditTime: 2023-12-11 11:10:39
  * @Description: 'file content'
 -->
 <template>
@@ -52,6 +52,20 @@ function changeSize(item, index) {
   rect.center();
   casStore.containerObj = markRaw(rect);
   casStore.container = item;
+  importUrl(casStore.BGUrl);
+}
+function importUrl(url) {
+  const { canvas, container, containerObj } = casStore;
+  fabric.Image.fromURL(url, img => {
+    canvas.setBackgroundImage(img, canvas.renderAll.bind(canvas), {
+      scaleX: (container.w * container.scale) / img.width,
+      scaleY: (container.h * container.scale) / img.height,
+      top: (800 - container.h * container.scale) / 2,
+      left: (1200 - container.w * container.scale) / 2
+    });
+    containerObj.set("fill", "transparent");
+    canvas.requestRenderAll();
+  });
 }
 </script>
 
