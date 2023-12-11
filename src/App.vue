@@ -2,7 +2,7 @@
  * @Author: 陈三石
  * @Date: 2023-12-06 10:49:12
  * @LastEditors: 陈三石
- * @LastEditTime: 2023-12-09 11:15:00
+ * @LastEditTime: 2023-12-11 14:40:47
  * @Description: 'file content'
 -->
 <template>
@@ -34,6 +34,7 @@
           <shape-editor v-if="casStore.editType === 'shape'"></shape-editor>
           <text-editor v-if="casStore.editType === 'text'"></text-editor>
           <draw-editor v-if="casStore.editType === 'draw'"></draw-editor>
+          <photo-editor v-if="casStore.editType === 'photo'"></photo-editor>
         </div>
       </div>
       <div class="canvas-box">
@@ -73,6 +74,7 @@ import CanvasSizeControl from "@/components/canvas/CanvasSizeControl.vue";
 import ShapeEditor from "@/components/editor/ShapeEditor.vue";
 import TextEditor from "@/components/editor/TextEditor.vue";
 import DrawEditor from "@/components/editor/DrawEditor.vue";
+import PhotoEditor from "@/components/editor/PhotoEditor.vue";
 
 import EditorTab from "@/components/layout/EditorTab.vue";
 
