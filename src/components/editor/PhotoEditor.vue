@@ -2,7 +2,7 @@
  * @Author: 陈三石
  * @Date: 2023-12-11 13:34:49
  * @LastEditors: 陈三石
- * @LastEditTime: 2023-12-11 13:57:18
+ * @LastEditTime: 2023-12-12 17:55:56
  * @Description: 'file content'
 -->
 <template>
@@ -14,20 +14,26 @@
       </el-upload>
     </div>
     <el-divider content-position="left">从图库选取</el-divider>
-    <photo-filter :visible="filterVis" :photourl="photoUrl"></photo-filter>
   </div>
 </template>
 
 <script setup>
 import { ref } from "vue";
-import PhotoFilter from "./PhotoFilter.vue";
+
+import { useCanvasStore } from "@/store/modules/canvas";
+const casStore = useCanvasStore();
 const photoUrl = ref("");
-const filterVis = ref(false);
 function onChange(file) {
   if (file.status === "ready") {
+    const { canvas } = casStore;
     let url = URL.createObjectURL(file.raw);
-    photoUrl.value = url;
-    filterVis.value = true;
+    fabric.Image.fromURL(url, img => {
+      img.scale(0.5);
+      canvas.add(img);
+      img.center();
+      img.type = "photo";
+    });
+    casStore.addPhotoUrl = url;
   }
 }
 function onRemove() {

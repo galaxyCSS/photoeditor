@@ -2,7 +2,7 @@
  * @Author: 陈三石
  * @Date: 2023-12-06 10:49:12
  * @LastEditors: 陈三石
- * @LastEditTime: 2023-12-11 14:40:47
+ * @LastEditTime: 2023-12-12 17:28:31
  * @Description: 'file content'
 -->
 <template>
@@ -46,13 +46,13 @@
           <shape-control v-if="controlType === 'shape'"></shape-control>
           <text-control v-if="controlType === 'text'"></text-control>
           <draw-control v-if="casStore.isDraw || controlType === 'path' || controlType === 'group'"></draw-control>
+          <photo-control></photo-control>
         </div>
         <div class="config-box" v-else>
           <canvas-size></canvas-size>
           <canvas-color></canvas-color>
           <canvas-bg></canvas-bg>
         </div>
-
         <div class="toggle" @click="changeRightToggle">
           <svg-icon :iconname="rightSlideVis ? 'sanjiaoleft' : 'sanjiaoright'"></svg-icon>
         </div>
@@ -68,7 +68,7 @@ import { useCanvasStore } from "@/store/modules/canvas";
 import { fabric } from "fabric";
 import CanvasSize from "@/components/canvas/CanvasSize.vue";
 import CanvasColor from "@/components/canvas/CanvasColor.vue";
-import CanvasBg from "./components/canvas/CanvasBG.vue";
+import CanvasBg from "@/components/canvas/CanvasBG.vue";
 import CanvasSizeControl from "@/components/canvas/CanvasSizeControl.vue";
 
 import ShapeEditor from "@/components/editor/ShapeEditor.vue";
@@ -81,6 +81,7 @@ import EditorTab from "@/components/layout/EditorTab.vue";
 import ShapeControl from "@/components/objectControl/ShapeControl.vue";
 import TextControl from "@/components/objectControl/TextControl.vue";
 import DrawControl from "@/components/objectControl/DrawControl.vue";
+import PhotoControl from "./components/objectControl/PhotoControl.vue";
 
 const casStore = useCanvasStore();
 const leftSlideVis = ref(false);
