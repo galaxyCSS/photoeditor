@@ -21,7 +21,8 @@ export const useCanvasStore = defineStore("canvasEditor", {
     selectedObj: [], // 选中的元素对象
     isDraw: false, // 是否绘画模式
     pencilBrush: null, // 画笔对象
-    BGUrl: "",
-    addPhotoUrl: ""
+    BGUrl: "", // 背景
+    addPhotoUrl: "", // 添加的图片
+    helpLine: {}
   })
 });

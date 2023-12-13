@@ -2,7 +2,7 @@
  * @Author: 陈三石
  * @Date: 2023-12-06 10:49:12
  * @LastEditors: 陈三石
- * @LastEditTime: 2023-12-13 10:35:25
+ * @LastEditTime: 2023-12-13 16:18:41
  * @Description: 'file content'
 -->
 <template>
@@ -81,7 +81,7 @@ import EditorTab from "@/components/layout/EditorTab.vue";
 import ShapeControl from "@/components/objectControl/ShapeControl.vue";
 import TextControl from "@/components/objectControl/TextControl.vue";
 import DrawControl from "@/components/objectControl/DrawControl.vue";
-import PhotoControl from "./components/objectControl/PhotoControl.vue";
+import PhotoControl from "@/components/objectControl/PhotoControl.vue";
 
 const casStore = useCanvasStore();
 const leftSlideVis = ref(false);
@@ -147,12 +147,21 @@ function initEvent(canvas) {
 }
 
 function onSelectionCreated(opt, canvas) {
+  opt.selected[0].isSelf = true;
   casStore.selectedObj = markRaw(opt.selected);
 }
 function onSelectionCleared(opt, canvas) {
+  delete opt.deselected[0].isSelf;
   casStore.selectedObj = markRaw([]);
+  console.log(casStore.helpLine);
+  for (let k in casStore.helpLine) {
+    canvas.remove(casStore.helpLine[k]);
+  }
 }
 function onSelectionUpdated(opt, canvas) {
+  let origin = casStore.selectedObj;
+  delete origin[0].isSelf;
+  opt.selected[0].isSelf = true;
   casStore.selectedObj = markRaw(opt.selected);
 }
 
