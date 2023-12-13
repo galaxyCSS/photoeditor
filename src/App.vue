@@ -2,7 +2,7 @@
  * @Author: 陈三石
  * @Date: 2023-12-06 10:49:12
  * @LastEditors: 陈三石
- * @LastEditTime: 2023-12-12 17:28:31
+ * @LastEditTime: 2023-12-13 10:35:25
  * @Description: 'file content'
 -->
 <template>
@@ -46,7 +46,7 @@
           <shape-control v-if="controlType === 'shape'"></shape-control>
           <text-control v-if="controlType === 'text'"></text-control>
           <draw-control v-if="casStore.isDraw || controlType === 'path' || controlType === 'group'"></draw-control>
-          <photo-control></photo-control>
+          <photo-control v-if="controlType === 'photo'"></photo-control>
         </div>
         <div class="config-box" v-else>
           <canvas-size></canvas-size>

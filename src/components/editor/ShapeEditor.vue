@@ -50,6 +50,9 @@ function createRectShape() {
   canvas.add(rect);
   rect.type = "shape";
   rect.center();
+  rect.on("moving", opt => {
+    console.log(opt);
+  });
 }
 function createTriangleShape() {
   const { canvas } = casStore;
