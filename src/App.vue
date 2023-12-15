@@ -2,7 +2,7 @@
  * @Author: 陈三石
  * @Date: 2023-12-06 10:49:12
  * @LastEditors: 陈三石
- * @LastEditTime: 2023-12-13 16:18:41
+ * @LastEditTime: 2023-12-15 09:43:44
  * @Description: 'file content'
 -->
 <template>
@@ -37,8 +37,8 @@
           <photo-editor v-if="casStore.editType === 'photo'"></photo-editor>
         </div>
       </div>
-      <div class="canvas-box">
-        <canvas id="cas" width="1200" height="800"></canvas>
+      <div class="canvas-box" ref="canvasBoxRef">
+        <canvas id="cas"></canvas>
         <canvas-size-control></canvas-size-control>
       </div>
       <div :class="['slide', 'right-slide', rightSlideVis ? 'close' : undefined]">
@@ -86,6 +86,7 @@ import PhotoControl from "@/components/objectControl/PhotoControl.vue";
 const casStore = useCanvasStore();
 const leftSlideVis = ref(false);
 const rightSlideVis = ref(false);
+const canvasBoxRef = ref();
 
 const controlType = computed(() => {
   if (casStore.selectedObj.length === 0) {
@@ -116,7 +117,9 @@ function changeRightToggle() {
 }
 function init() {
   const canvas = new fabric.Canvas("cas", {
-    preserveObjectStacking: true
+    preserveObjectStacking: true,
+    width: canvasBoxRef.value.offsetWidth,
+    height: canvasBoxRef.value.offsetHeight
   });
   canvas.zoom = 1;
   casStore.canvas = markRaw(canvas);
@@ -198,8 +201,8 @@ function onMouseWheel(opt, canvas) {
   if (zoom < 0.01) zoom = 0.01;
   canvas.zoomToPoint(
     {
-      x: 600,
-      y: 400
+      x: canvasBoxRef.value.offsetWidth / 2,
+      y: canvasBoxRef.value.offsetHeight / 2
     },
     zoom
   );
@@ -219,8 +222,8 @@ function save() {
     quality: 1,
     width: container.w * container.scale,
     height: container.h * container.scale,
-    top: (800 - container.h * container.scale) / 2,
-    left: (1200 - container.w * container.scale) / 2,
+    top: (canvasBoxRef.value.offsetHeight / 2 - container.h * container.scale) / 2,
+    left: (canvasBoxRef.value.offsetWidth / 2 - container.w * container.scale) / 2,
     multiplier: 1 / container.scale
   });
   let a = document.createElement("a");
@@ -321,6 +324,7 @@ function save() {
     }
     .canvas-box {
       flex: 1;
+      height: calc(100vh - 64px);
       background: #eee;
       display: flex;
       justify-content: center;

@@ -2,7 +2,7 @@
  * @Author: 陈三石
  * @Date: 2023-12-06 14:33:03
  * @LastEditors: 陈三石
- * @LastEditTime: 2023-12-11 11:10:39
+ * @LastEditTime: 2023-12-15 09:45:21
  * @Description: 'file content'
 -->
 <template>
@@ -52,7 +52,10 @@ function changeSize(item, index) {
   rect.center();
   casStore.containerObj = markRaw(rect);
   casStore.container = item;
-  importUrl(casStore.BGUrl);
+  console.log(casStore.BGUrl);
+  if (casStore.BGUrl) {
+    importUrl(casStore.BGUrl);
+  }
 }
 function importUrl(url) {
   const { canvas, container, containerObj } = casStore;
@@ -60,8 +63,8 @@ function importUrl(url) {
     canvas.setBackgroundImage(img, canvas.renderAll.bind(canvas), {
       scaleX: (container.w * container.scale) / img.width,
       scaleY: (container.h * container.scale) / img.height,
-      top: (800 - container.h * container.scale) / 2,
-      left: (1200 - container.w * container.scale) / 2
+      top: (canvas.getHeight() - container.h * container.scale) / 2,
+      left: (canvas.getWidth() - container.w * container.scale) / 2
     });
     containerObj.set("fill", "transparent");
     canvas.requestRenderAll();
