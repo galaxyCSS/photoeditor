@@ -2,7 +2,7 @@
  * @Author: 陈三石
  * @Date: 2023-12-06 10:49:12
  * @LastEditors: 陈三石
- * @LastEditTime: 2023-12-15 09:43:44
+ * @LastEditTime: 2023-12-15 14:38:29
  * @Description: 'file content'
 -->
 <template>
@@ -124,8 +124,9 @@ function init() {
   canvas.zoom = 1;
   casStore.canvas = markRaw(canvas);
   window.canvas = canvas;
-  initSize(canvas);
   initEvent(canvas);
+  initBGGrid(canvas);
+  initSize(canvas);
 }
 function initSize(canvas) {
   const { container } = casStore;
@@ -148,15 +149,56 @@ function initEvent(canvas) {
   canvas.on("selection:cleared", opt => onSelectionCleared(opt, canvas));
   canvas.on("selection:updated", opt => onSelectionUpdated(opt, canvas));
 }
-
+function initBGGrid(canvas) {
+  let width = canvas.getWidth();
+  let height = canvas.getHeight();
+  let rectWidth = 15;
+  let fill;
+  let rectArr = [];
+  for (let i = 0; i < width; i++) {
+    for (let j = 0; j < height; j++) {
+      if (j % rectWidth === 0 && i % rectWidth === 0) {
+        if (j % (rectWidth * 2) == 0) {
+          if (i % (rectWidth * 2) === 0) {
+            fill = "#F1F1F1";
+          } else {
+            fill = "#DEDCDC";
+          }
+        } else {
+          if (i % (rectWidth * 2) === 0) {
+            fill = "#DEDCDC";
+          } else {
+            fill = "#F1F1F1";
+          }
+        }
+        let rect = new fabric.Rect({
+          fill,
+          width: rectWidth,
+          height: rectWidth,
+          top: j,
+          left: i
+        });
+        rectArr.push(rect);
+      }
+    }
+  }
+  const group = new fabric.Group(rectArr, {
+    top: 0,
+    left: 0
+  });
+  canvas.add(group);
+  group.selectable = false;
+}
 function onSelectionCreated(opt, canvas) {
   opt.selected[0].isSelf = true;
   casStore.selectedObj = markRaw(opt.selected);
 }
 function onSelectionCleared(opt, canvas) {
-  delete opt.deselected[0].isSelf;
-  casStore.selectedObj = markRaw([]);
-  console.log(casStore.helpLine);
+  if (opt.deselected) {
+    delete opt.deselected[0].isSelf;
+    casStore.selectedObj = markRaw([]);
+  }
+
   for (let k in casStore.helpLine) {
     canvas.remove(casStore.helpLine[k]);
   }
@@ -222,8 +264,8 @@ function save() {
     quality: 1,
     width: container.w * container.scale,
     height: container.h * container.scale,
-    top: (canvasBoxRef.value.offsetHeight / 2 - container.h * container.scale) / 2,
-    left: (canvasBoxRef.value.offsetWidth / 2 - container.w * container.scale) / 2,
+    top: (canvas.getHeight() - container.h * container.scale) / 2,
+    left: (canvas.getWidth() - container.w * container.scale) / 2,
     multiplier: 1 / container.scale
   });
   let a = document.createElement("a");
