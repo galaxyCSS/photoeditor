@@ -2,7 +2,7 @@
  * @Author: 陈三石
  * @Date: 2023-12-06 10:49:12
  * @LastEditors: 陈三石
- * @LastEditTime: 2023-12-15 14:57:30
+ * @LastEditTime: 2023-12-15 17:44:53
  * @Description: 'file content'
 -->
 <template>
@@ -38,7 +38,7 @@
         </div>
       </div>
       <div class="canvas-box" ref="canvasBoxRef">
-        <canvas id="cas"></canvas>
+        <canvas id="cas" ref="casRef"></canvas>
         <canvas-size-control></canvas-size-control>
       </div>
       <div :class="['slide', 'right-slide', rightSlideVis ? 'close' : undefined]">
@@ -87,6 +87,7 @@ const casStore = useCanvasStore();
 const leftSlideVis = ref(false);
 const rightSlideVis = ref(false);
 const canvasBoxRef = ref();
+const casRef = ref();
 
 const controlType = computed(() => {
   if (casStore.selectedObj.length === 0) {
@@ -127,6 +128,7 @@ function init() {
   initEvent(canvas);
   // initBGGrid(canvas);
   initSize(canvas);
+  initRuler(canvas);
 }
 function initSize(canvas) {
   const { container } = casStore;
@@ -140,6 +142,7 @@ function initSize(canvas) {
   rect.selectable = false;
   casStore.containerObj = markRaw(rect);
 }
+function initRuler(canvas) {}
 function initEvent(canvas) {
   canvas.on("mouse:wheel", opt => onMouseWheel(opt, canvas));
   canvas.on("mouse:down", opt => onMouseDown(opt, canvas));

@@ -2,7 +2,7 @@
  * @Author: galaxy_css leic2088@163.com
  * @Date: 2023-12-08 20:28:29
  * @LastEditors: 陈三石
- * @LastEditTime: 2023-12-11 11:12:14
+ * @LastEditTime: 2023-12-15 17:47:36
  * @FilePath: /photoeditor/src/components/canvas/CanvasBG.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -48,8 +48,8 @@ function importPhoto(url) {
     canvas.setBackgroundImage(img, canvas.renderAll.bind(canvas), {
       scaleX: (container.w * container.scale) / img.width,
       scaleY: (container.h * container.scale) / img.height,
-      top: (800 - container.h * container.scale) / 2,
-      left: (1200 - container.w * container.scale) / 2
+      top: (canvas.getHeight() - container.h * container.scale) / 2,
+      left: (canvas.getWidth() - container.w * container.scale) / 2
     });
     containerObj.set("fill", "transparent");
     canvas.requestRenderAll();
