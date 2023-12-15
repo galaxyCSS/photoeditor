@@ -2,7 +2,7 @@
  * @Author: 陈三石
  * @Date: 2023-12-06 10:49:12
  * @LastEditors: 陈三石
- * @LastEditTime: 2023-12-15 14:38:29
+ * @LastEditTime: 2023-12-15 14:57:30
  * @Description: 'file content'
 -->
 <template>
@@ -125,7 +125,7 @@ function init() {
   casStore.canvas = markRaw(canvas);
   window.canvas = canvas;
   initEvent(canvas);
-  initBGGrid(canvas);
+  // initBGGrid(canvas);
   initSize(canvas);
 }
 function initSize(canvas) {
@@ -372,6 +372,16 @@ function save() {
       justify-content: center;
       align-items: center;
       position: relative;
+      #cas {
+        --offsetX: 0px;
+        --offsetY: 0px;
+        --size: 16px;
+        --color: #dedcdc;
+        background-image: linear-gradient(45deg, var(--color) 25%, transparent 0, transparent 75%, var(--color) 0),
+          linear-gradient(45deg, var(--color) 25%, transparent 0, transparent 75%, var(--color) 0);
+        background-position: var(--offsetX) var(--offsetY), calc(var(--size) + var(--offsetX)) calc(var(--size) + var(--offsetY));
+        background-size: calc(var(--size) * 2) calc(var(--size) * 2);
+      }
     }
   }
 }
