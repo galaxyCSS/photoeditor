@@ -2,7 +2,7 @@
  * @Author: 陈三石
  * @Date: 2023-12-06 10:49:12
  * @LastEditors: 陈三石
- * @LastEditTime: 2023-12-15 17:44:53
+ * @LastEditTime: 2023-12-15 18:03:05
  * @Description: 'file content'
 -->
 <template>
@@ -124,7 +124,6 @@ function init() {
   });
   canvas.zoom = 1;
   casStore.canvas = markRaw(canvas);
-  window.canvas = canvas;
   initEvent(canvas);
   // initBGGrid(canvas);
   initSize(canvas);
