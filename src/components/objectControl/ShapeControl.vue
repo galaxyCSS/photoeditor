@@ -1,8 +1,8 @@
 <!--
  * @Author: 陈三石
  * @Date: 2023-12-07 15:44:50
- * @LastEditors: galaxy_css leic2088@163.com
- * @LastEditTime: 2023-12-07 21:02:00
+ * @LastEditors: 陈三石
+ * @LastEditTime: 2023-12-16 09:23:21
  * @Description: 'file content'
 -->
 <template>
@@ -120,6 +120,7 @@ function changeStrokeWidth(strokeWidth) {
 }
 
 function radiusChange(radius) {
+  const { canvas } = casStore;
   state.rxry = radius;
   let selected = casStore.selectedObj[0];
   selected.set("rx", radius);

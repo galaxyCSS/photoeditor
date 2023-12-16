@@ -2,7 +2,7 @@
  * @Author: 陈三石
  * @Date: 2023-12-06 10:49:12
  * @LastEditors: 陈三石
- * @LastEditTime: 2023-12-15 18:03:05
+ * @LastEditTime: 2023-12-16 09:25:33
  * @Description: 'file content'
 -->
 <template>
@@ -125,9 +125,9 @@ function init() {
   canvas.zoom = 1;
   casStore.canvas = markRaw(canvas);
   initEvent(canvas);
-  // initBGGrid(canvas);
   initSize(canvas);
   initRuler(canvas);
+  initClipPath(canvas);
 }
 function initSize(canvas) {
   const { container } = casStore;
@@ -150,6 +150,17 @@ function initEvent(canvas) {
   canvas.on("selection:created", opt => onSelectionCreated(opt, canvas));
   canvas.on("selection:cleared", opt => onSelectionCleared(opt, canvas));
   canvas.on("selection:updated", opt => onSelectionUpdated(opt, canvas));
+}
+function initClipPath(canvas) {
+  const { containerObj, container } = casStore;
+  const clipPath = new fabric.Rect({
+    fill: container.fill,
+    width: container.w * container.scale,
+    height: container.h * container.scale,
+    top: containerObj.top,
+    left: containerObj.left
+  });
+  canvas.clipPath = clipPath;
 }
 function initBGGrid(canvas) {
   let width = canvas.getWidth();
