@@ -2,7 +2,7 @@
  * @Author: 陈三石
  * @Date: 2023-12-06 10:49:12
  * @LastEditors: 陈三石
- * @LastEditTime: 2023-12-16 09:25:33
+ * @LastEditTime: 2023-12-16 10:34:59
  * @Description: 'file content'
 -->
 <template>
@@ -320,11 +320,20 @@ function save() {
     flex: 1;
     display: flex;
     justify-content: center;
+    --offsetX: 0px;
+    --offsetY: 0px;
+    --size: 16px;
+    --color: #dedcdc;
+    background-image: linear-gradient(45deg, var(--color) 25%, transparent 0, transparent 75%, var(--color) 0),
+      linear-gradient(45deg, var(--color) 25%, transparent 0, transparent 75%, var(--color) 0);
+    background-position: var(--offsetX) var(--offsetY), calc(var(--size) + var(--offsetX)) calc(var(--size) + var(--offsetY));
+    background-size: calc(var(--size) * 2) calc(var(--size) * 2);
     .slide {
       width: 300px;
       height: 100%;
       position: relative;
       transition: width 0.3s;
+      background: #fff;
       .toggle {
         position: absolute;
         width: 15px;
@@ -380,21 +389,10 @@ function save() {
     .canvas-box {
       flex: 1;
       height: calc(100vh - 64px);
-      background: #eee;
       display: flex;
       justify-content: center;
       align-items: center;
       position: relative;
-      #cas {
-        --offsetX: 0px;
-        --offsetY: 0px;
-        --size: 16px;
-        --color: #dedcdc;
-        background-image: linear-gradient(45deg, var(--color) 25%, transparent 0, transparent 75%, var(--color) 0),
-          linear-gradient(45deg, var(--color) 25%, transparent 0, transparent 75%, var(--color) 0);
-        background-position: var(--offsetX) var(--offsetY), calc(var(--size) + var(--offsetX)) calc(var(--size) + var(--offsetY));
-        background-size: calc(var(--size) * 2) calc(var(--size) * 2);
-      }
     }
   }
 }
