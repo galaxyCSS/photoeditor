@@ -1,8 +1,8 @@
 <!--
  * @Author: 陈三石
  * @Date: 2023-12-12 17:19:17
- * @LastEditors: galaxy_css leic2088@163.com
- * @LastEditTime: 2023-12-12 22:19:49
+ * @LastEditors: 陈三石
+ * @LastEditTime: 2023-12-18 15:47:24
  * @Description: 'file content'
 -->
 <template>
@@ -103,6 +103,7 @@ const allFilters = [
 ];
 const casStore = useCanvasStore();
 onMounted(() => {
+  return;
   initCas();
 });
 function initCas() {

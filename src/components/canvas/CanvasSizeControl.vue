@@ -2,7 +2,7 @@
  * @Author: 陈三石
  * @Date: 2023-12-07 09:35:02
  * @LastEditors: 陈三石
- * @LastEditTime: 2023-12-07 10:24:25
+ * @LastEditTime: 2023-12-18 15:49:31
  * @Description: 'file content'
 -->
 <template>
@@ -35,8 +35,8 @@ function sizeChange(isPlus, e) {
   }
   canvas.zoomToPoint(
     {
-      x: 600,
-      y: 400
+      x: canvas.width / 2,
+      y: canvas.height / 2
     },
     zoom
   );
@@ -48,7 +48,7 @@ function sizeChange(isPlus, e) {
 .size-control {
   position: absolute;
   bottom: 15px;
-  right: 15px;
+  right: 330px;
   background: #fff;
   display: flex;
   border-radius: 3px;

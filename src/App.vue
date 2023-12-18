@@ -2,7 +2,7 @@
  * @Author: 陈三石
  * @Date: 2023-12-06 10:49:12
  * @LastEditors: 陈三石
- * @LastEditTime: 2023-12-18 14:33:53
+ * @LastEditTime: 2023-12-18 15:49:10
  * @Description: 'file content'
 -->
 <template>
@@ -256,8 +256,8 @@ function onMouseWheel(opt, canvas) {
   if (zoom < 0.01) zoom = 0.01;
   canvas.zoomToPoint(
     {
-      x: canvasBoxRef.value.offsetWidth / 2,
-      y: canvasBoxRef.value.offsetHeight / 2
+      x: canvas.width / 2,
+      y: canvas.height / 2
     },
     zoom
   );
@@ -317,7 +317,7 @@ function save() {
     }
   }
   .content {
-    flex: 1;
+    width: 100%;
     display: flex;
     justify-content: center;
     --offsetX: 0px;
@@ -328,13 +328,16 @@ function save() {
       linear-gradient(45deg, var(--color) 25%, transparent 0, transparent 75%, var(--color) 0);
     background-position: var(--offsetX) var(--offsetY), calc(var(--size) + var(--offsetX)) calc(var(--size) + var(--offsetY));
     background-size: calc(var(--size) * 2) calc(var(--size) * 2);
+    position: relative;
+    overflow: hidden;
     .slide {
       width: 300px;
-      height: calc(100% - 64px);
+      height: 100%;
       position: relative;
       transition: all 0.3s;
       background: #fff;
       position: absolute;
+      z-index: 1;
       .toggle {
         position: absolute;
         width: 15px;
