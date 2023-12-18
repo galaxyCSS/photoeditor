@@ -2,7 +2,7 @@
  * @Author: 陈三石
  * @Date: 2023-12-06 10:49:12
  * @LastEditors: 陈三石
- * @LastEditTime: 2023-12-06 13:37:04
+ * @LastEditTime: 2023-12-18 16:43:22
  * @Description: 'file content'
  */
 import { defineConfig } from "vite";
@@ -19,5 +19,6 @@ export default defineConfig({
     postcss: {
       plugins: [postcssNesting()]
     }
-  }
+  },
+  base: "/vue-photo-editor/"
 });
