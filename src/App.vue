@@ -2,7 +2,7 @@
  * @Author: 陈三石
  * @Date: 2023-12-06 10:49:12
  * @LastEditors: 陈三石
- * @LastEditTime: 2023-12-16 10:34:59
+ * @LastEditTime: 2023-12-18 14:33:53
  * @Description: 'file content'
 -->
 <template>
@@ -330,10 +330,11 @@ function save() {
     background-size: calc(var(--size) * 2) calc(var(--size) * 2);
     .slide {
       width: 300px;
-      height: 100%;
+      height: calc(100% - 64px);
       position: relative;
-      transition: width 0.3s;
+      transition: all 0.3s;
       background: #fff;
+      position: absolute;
       .toggle {
         position: absolute;
         width: 15px;
@@ -351,6 +352,7 @@ function save() {
       &.left-slide {
         box-shadow: -1px 9px 5px #999;
         display: flex;
+        left: 0;
         &.close {
           width: 50px;
           .editor-box {
@@ -372,22 +374,23 @@ function save() {
       }
       &.right-slide {
         box-shadow: 1px 5px 5px #999;
+        right: 0;
         .config-box {
           padding: 15px;
         }
         .object-control {
           padding: 15px;
         }
-        &.close {
-          width: 0px;
-        }
         .toggle {
           left: -15px;
+        }
+        &.close {
+          right: -300px;
         }
       }
     }
     .canvas-box {
-      flex: 1;
+      width: 100%;
       height: calc(100vh - 64px);
       display: flex;
       justify-content: center;
