@@ -2,7 +2,7 @@
  * @Author: 陈三石
  * @Date: 2023-12-06 10:49:12
  * @LastEditors: 陈三石
- * @LastEditTime: 2023-12-18 15:49:10
+ * @LastEditTime: 2023-12-21 14:33:25
  * @Description: 'file content'
 -->
 <template>
@@ -10,9 +10,13 @@
     <div class="header">
       <div class="options">
         <div class="options-left">
-          <div class="item">
+          <div class="draw-mod">
             <span class="label">绘画模式</span>
             <el-switch v-model="casStore.isDraw" />
+          </div>
+          <div class="recover">
+            <span class="item"><svg-icon iconname="shangyibu"></svg-icon></span>
+            <span class="item"><svg-icon iconname="xiayibu"></svg-icon></span>
           </div>
         </div>
         <div class="options-right">
@@ -308,10 +312,19 @@ function save() {
       justify-content: space-between;
     }
     .options-left {
-      .item {
+      display: flex;
+      align-items: center;
+      .draw-mod {
+        margin-right: 10px;
         .label {
           font-size: 14px;
           margin-right: 10px;
+        }
+      }
+      .recover {
+        .item {
+          padding: 0 5px;
+          cursor: pointer;
         }
       }
     }

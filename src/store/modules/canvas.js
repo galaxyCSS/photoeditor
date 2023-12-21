@@ -2,7 +2,7 @@
  * @Author: 陈三石
  * @Date: 2023-12-06 13:58:44
  * @LastEditors: 陈三石
- * @LastEditTime: 2023-12-12 17:52:45
+ * @LastEditTime: 2023-12-21 14:34:27
  * @Description: 'file content'
  */
 import { defineStore } from "pinia";
@@ -23,6 +23,7 @@ export const useCanvasStore = defineStore("canvasEditor", {
     pencilBrush: null, // 画笔对象
     BGUrl: "", // 背景
     addPhotoUrl: "", // 添加的图片
-    helpLine: {}
+    helpLine: {}, // 辅助线
+    layerStack: [] // 图层栈
   })
 });
