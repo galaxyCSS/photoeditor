@@ -56,6 +56,7 @@ function createRectShape() {
     originY: "center"
   });
   canvas.add(rect);
+  casStore.layerStack.push(markRaw(rect));
   rect.type = "shape";
   rect.center();
   rect.on("moving", opt => {
@@ -78,6 +79,7 @@ function createTriangleShape() {
     originY: "center"
   });
   canvas.add(triangle);
+  casStore.layerStack.push(markRaw(triangle));
   triangle.type = "shape";
   triangle.center();
   triangle.on("moving", opt => {
@@ -99,6 +101,7 @@ function createCircleShape() {
     originY: "center"
   });
   canvas.add(circle);
+  casStore.layerStack.push(markRaw(circle));
   circle.type = "shape";
   circle.center();
   circle.on("moving", opt => {
@@ -121,6 +124,7 @@ function createEllipseShape() {
     originY: "center"
   });
   canvas.add(ellipse);
+  casStore.layerStack.push(markRaw(ellipse));
   ellipse.type = "shape";
   ellipse.center();
   ellipse.on("moving", opt => {
