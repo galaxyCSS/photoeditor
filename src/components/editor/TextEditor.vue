@@ -2,7 +2,7 @@
  * @Author: 陈三石
  * @Date: 2023-12-08 13:46:21
  * @LastEditors: 陈三石
- * @LastEditTime: 2023-12-08 15:30:16
+ * @LastEditTime: 2023-12-22 15:14:45
  * @Description: 'file content'
 -->
 <template>
@@ -18,6 +18,7 @@
 <script setup>
 import SvgIcon from "@/components/SvgIcon.vue";
 import { useCanvasStore } from "@/store/modules/canvas";
+import { markRaw } from "vue";
 const casStore = useCanvasStore();
 function createText() {
   const { canvas } = casStore;
@@ -25,19 +26,10 @@ function createText() {
     fill: "#333",
     originX: "center",
     originY: "center"
-    // fontWeight: "bold",
-    // fontStyle: "italic",
-    // linethrough: true,
-    // underline: true
-    // shadow: new fabric.Shadow({
-    //   color: "red",
-    //   blur: 5,
-    //   offsetX: -2,
-    //   offsetY: 10
-    // })
   });
   text.type = "text";
   canvas.add(text);
+  casStore.layerStack.push(markRaw(text));
   text.center();
 }
 </script>

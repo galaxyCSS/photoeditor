@@ -2,7 +2,7 @@
  * @Author: 陈三石
  * @Date: 2023-12-06 10:49:12
  * @LastEditors: 陈三石
- * @LastEditTime: 2023-12-18 15:49:10
+ * @LastEditTime: 2023-12-22 15:09:23
  * @Description: 'file content'
 -->
 <template>
@@ -10,9 +10,17 @@
     <div class="header">
       <div class="options">
         <div class="options-left">
-          <div class="item">
+          <div class="draw-mod">
             <span class="label">绘画模式</span>
             <el-switch v-model="casStore.isDraw" />
+          </div>
+          <div class="recover">
+            <span :class="['item', casStore.layerStack.length === 0 ? 'disabled' : undefined]"
+              ><svg-icon iconname="shangyibu" @click="prevLayer"></svg-icon
+            ></span>
+            <span :class="['item', casStore.layerRemoveStack.length === 0 ? 'disabled' : undefined]"
+              ><svg-icon iconname="xiayibu" @click="nextLayer"></svg-icon
+            ></span>
           </div>
         </div>
         <div class="options-right">
@@ -288,6 +296,21 @@ function save() {
   a.href = photoUrl;
   a.dispatchEvent(event);
 }
+
+function prevLayer() {
+  const { canvas, layerStack, layerRemoveStack } = casStore;
+  if (layerStack.length === 0) return;
+  let item = layerStack.pop();
+  layerRemoveStack.unshift(item);
+  canvas.remove(item);
+}
+function nextLayer() {
+  const { canvas, layerStack, layerRemoveStack } = casStore;
+  if (layerRemoveStack.length === 0) return;
+  let item = layerRemoveStack.shift();
+  layerStack.push(item);
+  canvas.add(item);
+}
 </script>
 
 <style scoped lang="postcss">
@@ -308,12 +331,30 @@ function save() {
       justify-content: space-between;
     }
     .options-left {
-      .item {
+      display: flex;
+      align-items: center;
+      .recover {
+        margin-right: 20px;
+        .item {
+          padding: 0 5px;
+          cursor: pointer;
+          &.disabled {
+            color: #999;
+            cursor: not-allowed;
+          }
+        }
+      }
+      .draw-mod {
+        margin-right: 10px;
         .label {
           font-size: 14px;
           margin-right: 10px;
         }
       }
+    }
+    .options-right {
+      display: flex;
+      align-items: center;
     }
   }
   .content {

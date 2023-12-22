@@ -25,7 +25,10 @@ const casStore = useCanvasStore();
 let helpLine = {
   ltLine: null,
   rtLine: null,
-  centerLine: null
+  tlrLine: null,
+  blrLine: null,
+  ycenterLine: null,
+  xcenterLine: null
 };
 function createShape(shape) {
   switch (shape) {
@@ -53,13 +56,17 @@ function createRectShape() {
     originY: "center"
   });
   canvas.add(rect);
+  casStore.layerStack.push(markRaw(rect));
   rect.type = "shape";
   rect.center();
   rect.on("moving", opt => {
     let target = casStore.selectedObj[0];
-    setMoveLine(target, "tl", "bl", "ltLine");
-    setMoveLine(target, "tr", "br", "rtLine");
-    setCenterLine(target, "left", "left", "centerLine");
+    setMoveLine(target, "tl", "bl", "ltLine", "x");
+    setMoveLine(target, "tr", "br", "rtLine", "x");
+    setMoveLine(target, "tl", "tr", "tlrLine", "y");
+    setMoveLine(target, "bl", "br", "blrLine", "y");
+    setCenterLine(target, "xcenterLine", "x");
+    setCenterLine(target, "ycenterLine", "y");
   });
 }
 function createTriangleShape() {
@@ -72,13 +79,17 @@ function createTriangleShape() {
     originY: "center"
   });
   canvas.add(triangle);
+  casStore.layerStack.push(markRaw(triangle));
   triangle.type = "shape";
   triangle.center();
   triangle.on("moving", opt => {
     let target = casStore.selectedObj[0];
     setMoveLine(target, "tl", "bl", "ltLine");
     setMoveLine(target, "tr", "br", "rtLine");
-    setCenterLine(target, "left", "left", "centerLine");
+    setMoveLine(target, "tl", "tr", "tlrLine", "y");
+    setMoveLine(target, "bl", "br", "blrLine", "y");
+    setCenterLine(target, "xcenterLine", "x");
+    setCenterLine(target, "ycenterLine", "y");
   });
 }
 function createCircleShape() {
@@ -90,13 +101,17 @@ function createCircleShape() {
     originY: "center"
   });
   canvas.add(circle);
+  casStore.layerStack.push(markRaw(circle));
   circle.type = "shape";
   circle.center();
   circle.on("moving", opt => {
     let target = casStore.selectedObj[0];
     setMoveLine(target, "tl", "bl", "ltLine");
     setMoveLine(target, "tr", "br", "rtLine");
-    setCenterLine(target, "left", "left", "centerLine");
+    setMoveLine(target, "tl", "tr", "tlrLine", "y");
+    setMoveLine(target, "bl", "br", "blrLine", "y");
+    setCenterLine(target, "xcenterLine", "x");
+    setCenterLine(target, "ycenterLine", "y");
   });
 }
 function createEllipseShape() {
@@ -109,21 +124,23 @@ function createEllipseShape() {
     originY: "center"
   });
   canvas.add(ellipse);
+  casStore.layerStack.push(markRaw(ellipse));
   ellipse.type = "shape";
   ellipse.center();
   ellipse.on("moving", opt => {
     let target = casStore.selectedObj[0];
     setMoveLine(target, "tl", "bl", "ltLine");
     setMoveLine(target, "tr", "br", "rtLine");
-    setCenterLine(target, "left", "left", "centerLine");
+    setCenterLine(target, "xcenterLine", "x");
+    setCenterLine(target, "ycenterLine", "y");
   });
 }
-function setMoveLine(target, typeA, typeB, lineType) {
+function setMoveLine(target, typeA, typeB, lineType, dir = "x") {
   const { canvas } = casStore;
   let leftPoint = target.lineCoords[typeA];
   let allObjs = canvas.getObjects();
   allObjs = allObjs.filter(i => !i.hasOwnProperty("isSelf"));
-  let item = allObjs.find(i => setDoubleNum(i.lineCoords[typeB].x) === setDoubleNum(leftPoint.x));
+  let item = allObjs.find(i => setDoubleNum(i.lineCoords[typeB][dir]) === setDoubleNum(leftPoint[dir]));
   canvas.remove(helpLine[lineType]);
   if (item) {
     let endPoint = item.lineCoords[typeB];
@@ -137,19 +154,20 @@ function setMoveLine(target, typeA, typeB, lineType) {
   }
   casStore.helpLine = markRaw(helpLine);
 }
-function setCenterLine(target, typeA, typeB, lineType) {
+function setCenterLine(target, lineType, dir = "x") {
+  let type = dir === "x" ? "left" : "top";
   const { canvas } = casStore;
   let leftPoint = {
-    x: target[typeA],
+    x: target.left,
     y: target.top
   };
   let allObjs = canvas.getObjects();
   allObjs = allObjs.filter(i => !i.hasOwnProperty("isSelf"));
-  let item = allObjs.find(i => setDoubleNum(i[typeB]) === setDoubleNum(leftPoint.x));
+  let item = allObjs.find(i => setDoubleNum(i[type]) === setDoubleNum(leftPoint[dir]));
   canvas.remove(helpLine[lineType]);
   if (item) {
     let endPoint = {
-      x: item[typeB],
+      x: item.left,
       y: item.top
     };
     helpLine[lineType] = new fabric.Line([leftPoint.x, leftPoint.y, endPoint.x, endPoint.y], {
@@ -162,6 +180,7 @@ function setCenterLine(target, typeA, typeB, lineType) {
   }
   casStore.helpLine = helpLine;
 }
+
 function setDoubleNum(num) {
   return Math.floor(num);
 }
