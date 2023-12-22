@@ -2,7 +2,7 @@
  * @Author: 陈三石
  * @Date: 2023-12-11 13:34:49
  * @LastEditors: 陈三石
- * @LastEditTime: 2023-12-12 17:55:56
+ * @LastEditTime: 2023-12-22 15:14:29
  * @Description: 'file content'
 -->
 <template>
@@ -18,7 +18,7 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, markRaw } from "vue";
 
 import { useCanvasStore } from "@/store/modules/canvas";
 const casStore = useCanvasStore();
@@ -30,6 +30,7 @@ function onChange(file) {
     fabric.Image.fromURL(url, img => {
       img.scale(0.5);
       canvas.add(img);
+      casStore.layerStack.push(markRaw(img));
       img.center();
       img.type = "photo";
     });
