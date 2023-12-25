@@ -2,7 +2,7 @@
  * @Author: 陈三石
  * @Date: 2023-12-06 10:49:12
  * @LastEditors: 陈三石
- * @LastEditTime: 2023-12-22 15:09:23
+ * @LastEditTime: 2023-12-25 17:08:35
  * @Description: 'file content'
 -->
 <template>
@@ -134,7 +134,6 @@ function init() {
   casStore.canvas = markRaw(canvas);
   initEvent(canvas);
   initSize(canvas);
-  initRuler(canvas);
   initClipPath(canvas);
 }
 function initSize(canvas) {
@@ -149,7 +148,9 @@ function initSize(canvas) {
   rect.selectable = false;
   casStore.containerObj = markRaw(rect);
 }
-function initRuler(canvas) {}
+function initRuler(canvas) {
+  console.log(1);
+}
 function initEvent(canvas) {
   canvas.on("mouse:wheel", opt => onMouseWheel(opt, canvas));
   canvas.on("mouse:down", opt => onMouseDown(opt, canvas));
@@ -158,6 +159,7 @@ function initEvent(canvas) {
   canvas.on("selection:created", opt => onSelectionCreated(opt, canvas));
   canvas.on("selection:cleared", opt => onSelectionCleared(opt, canvas));
   canvas.on("selection:updated", opt => onSelectionUpdated(opt, canvas));
+  canvas.on("after:render", opt => initRuler(canvas));
 }
 function initClipPath(canvas) {
   const { containerObj, container } = casStore;
@@ -440,6 +442,8 @@ function nextLayer() {
       justify-content: center;
       align-items: center;
       position: relative;
+      #cas {
+      }
     }
   }
 }
