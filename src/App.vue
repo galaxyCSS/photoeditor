@@ -2,7 +2,7 @@
  * @Author: 陈三石
  * @Date: 2023-12-06 10:49:12
  * @LastEditors: 陈三石
- * @LastEditTime: 2023-12-25 17:08:35
+ * @LastEditTime: 2023-12-27 09:28:44
  * @Description: 'file content'
 -->
 <template>
@@ -35,9 +35,9 @@
         <div class="options-bar">
           <editor-tab></editor-tab>
         </div>
-        <div class="toggle" @click="changeLeftToggle">
+        <!-- <div class="toggle" @click="changeLeftToggle">
           <svg-icon :iconname="leftSlideVis ? 'sanjiaoright' : 'sanjiaoleft'"></svg-icon>
-        </div>
+        </div> -->
         <div class="editor-box">
           <shape-editor v-if="casStore.editType === 'shape'"></shape-editor>
           <text-editor v-if="casStore.editType === 'text'"></text-editor>
@@ -61,9 +61,9 @@
           <canvas-color></canvas-color>
           <canvas-bg></canvas-bg>
         </div>
-        <div class="toggle" @click="changeRightToggle">
+        <!-- <div class="toggle" @click="changeRightToggle">
           <svg-icon :iconname="rightSlideVis ? 'sanjiaoleft' : 'sanjiaoright'"></svg-icon>
-        </div>
+        </div> -->
       </div>
     </div>
   </div>
@@ -96,6 +96,7 @@ const leftSlideVis = ref(false);
 const rightSlideVis = ref(false);
 const canvasBoxRef = ref();
 const casRef = ref();
+const rulerSize = 30;
 
 const controlType = computed(() => {
   if (casStore.selectedObj.length === 0) {
@@ -148,8 +149,48 @@ function initSize(canvas) {
   rect.selectable = false;
   casStore.containerObj = markRaw(rect);
 }
-function initRuler(canvas) {
-  console.log(1);
+function initRuler() {
+  initRulerBG();
+  initRulerMark();
+}
+function initRulerBG() {
+  const { canvas } = casStore;
+  const ctx = canvas.getContext();
+  ctx.fillStyle = "#fff";
+  ctx.fillRect(0, 0, canvas.width, rulerSize);
+  ctx.fillRect(300, 0, rulerSize, canvas.width);
+}
+function initRulerMark() {
+  const { canvas, containerObj, container } = casStore;
+  let left = containerObj.left;
+  let width = container.w * container.scale;
+  const stepLine = 90;
+  const count = width / stepLine;
+  const stepText = container.w / count;
+  const ctx = canvas.getContext();
+  ctx.beginPath();
+  ctx.fillStyle = "#333";
+  ctx.textBaseline = "top";
+  ctx.textAlign = "center";
+  // 居中标尺
+  for (let i = 0; i <= count; i++) {
+    const text = stepText * i + "";
+    //ctx.fillText(text, left + i * stepLine, 5);
+    ctx.fillRect(left + i * stepLine, 20, 1, 10);
+  }
+  ctx.restore();
+  // // 右侧填补
+  // for (let i = 0; i <= 4; i++) {
+  //   const text = container.w + stepText + stepText * i + "";
+  //   ctx.fillText(text, left + width + stepLine + i * stepLine, 5);
+  //   ctx.fillRect(left + width + stepLine + i * stepLine, 20, 1, 10);
+  // }
+  // // 左侧填补
+  // for (let i = 0; i <= 3; i++) {
+  //   const text = 0 - stepText - stepText * i + "";
+  //   ctx.fillText(text, left - stepLine - i * stepLine, 5);
+  //   ctx.fillRect(left - stepLine - i * stepLine, 20, 1, 10);
+  // }
 }
 function initEvent(canvas) {
   canvas.on("mouse:wheel", opt => onMouseWheel(opt, canvas));
@@ -159,14 +200,16 @@ function initEvent(canvas) {
   canvas.on("selection:created", opt => onSelectionCreated(opt, canvas));
   canvas.on("selection:cleared", opt => onSelectionCleared(opt, canvas));
   canvas.on("selection:updated", opt => onSelectionUpdated(opt, canvas));
-  canvas.on("after:render", opt => initRuler(canvas));
+  canvas.on("after:render", opt => {
+    //initRuler(canvas);
+  });
 }
 function initClipPath(canvas) {
   const { containerObj, container } = casStore;
   const clipPath = new fabric.Rect({
     fill: container.fill,
-    width: container.w * container.scale,
-    height: container.h * container.scale,
+    width: containerObj.width,
+    height: containerObj.height,
     top: containerObj.top,
     left: containerObj.left
   });
