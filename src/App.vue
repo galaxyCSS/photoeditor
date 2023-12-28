@@ -2,7 +2,7 @@
  * @Author: 陈三石
  * @Date: 2023-12-06 10:49:12
  * @LastEditors: 陈三石
- * @LastEditTime: 2023-12-28 11:17:55
+ * @LastEditTime: 2023-12-28 13:57:13
  * @Description: 'file content'
 -->
 <template>
@@ -444,6 +444,7 @@ function nextLayer() {
     .slide {
       width: 300px;
       height: 100%;
+      overflow: auto;
       position: relative;
       transition: all 0.3s;
       background: #fff;
