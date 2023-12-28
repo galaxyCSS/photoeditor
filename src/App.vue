@@ -2,7 +2,7 @@
  * @Author: 陈三石
  * @Date: 2023-12-06 10:49:12
  * @LastEditors: 陈三石
- * @LastEditTime: 2023-12-22 15:09:23
+ * @LastEditTime: 2023-12-28 09:59:22
  * @Description: 'file content'
 -->
 <template>
@@ -35,9 +35,9 @@
         <div class="options-bar">
           <editor-tab></editor-tab>
         </div>
-        <div class="toggle" @click="changeLeftToggle">
+        <!-- <div class="toggle" @click="changeLeftToggle">
           <svg-icon :iconname="leftSlideVis ? 'sanjiaoright' : 'sanjiaoleft'"></svg-icon>
-        </div>
+        </div> -->
         <div class="editor-box">
           <shape-editor v-if="casStore.editType === 'shape'"></shape-editor>
           <text-editor v-if="casStore.editType === 'text'"></text-editor>
@@ -61,9 +61,9 @@
           <canvas-color></canvas-color>
           <canvas-bg></canvas-bg>
         </div>
-        <div class="toggle" @click="changeRightToggle">
+        <!-- <div class="toggle" @click="changeRightToggle">
           <svg-icon :iconname="rightSlideVis ? 'sanjiaoleft' : 'sanjiaoright'"></svg-icon>
-        </div>
+        </div> -->
       </div>
     </div>
   </div>
@@ -134,7 +134,6 @@ function init() {
   casStore.canvas = markRaw(canvas);
   initEvent(canvas);
   initSize(canvas);
-  initRuler(canvas);
   initClipPath(canvas);
 }
 function initSize(canvas) {
@@ -149,7 +148,74 @@ function initSize(canvas) {
   rect.selectable = false;
   casStore.containerObj = markRaw(rect);
 }
-function initRuler(canvas) {}
+function initRuler() {
+  initRulerBG();
+  initXRulerMark();
+  initYRulerMark();
+}
+function initRulerBG() {
+  const { canvas } = casStore;
+  const ctx = canvas.getContext();
+  ctx.fillStyle = "#fff";
+  ctx.fillRect(0, 0, canvas.width, 30);
+  ctx.fillRect(300, 0, 60, canvas.width);
+}
+function initXRulerMark() {
+  const { canvas, container } = casStore;
+  let width = container.w * container.scale * canvas.zoom;
+  let left = (canvas.width - width) / 2;
+  const stepLine = 90;
+  const count = width / stepLine;
+  const stepText = container.w / count;
+  const ctx = canvas.getContext();
+  ctx.beginPath();
+  ctx.fillStyle = "#333";
+  ctx.textBaseline = "top";
+  ctx.textAlign = "center";
+  // 居中标尺
+  for (let i = 0; i <= 20; i++) {
+    const text = Math.ceil(stepText * i);
+    ctx.fillText(text, left + i * stepLine, 5);
+    ctx.fillRect(left + i * stepLine, 20, 1, 10);
+  }
+  // 左侧填补
+  for (let i = 0; i <= 20; i++) {
+    const text = Math.ceil(0 - stepText - stepText * i);
+    ctx.fillText(text, left - stepLine - i * stepLine, 5);
+    ctx.fillRect(left - stepLine - i * stepLine, 20, 1, 10);
+  }
+}
+function initYRulerMark() {
+  const { canvas, container } = casStore;
+  let width = container.w * container.scale * canvas.zoom;
+  let height = container.h * container.scale * canvas.zoom;
+  let left = (canvas.width - width) / 2;
+  let top = (canvas.height - height) / 2;
+  const stepLine = 90;
+  const count = height / stepLine;
+  const stepText = container.h / count;
+  const ctx = canvas.getContext();
+  ctx.beginPath();
+  ctx.fillStyle = "#333";
+  ctx.textBaseline = "top";
+  ctx.textAlign = "center";
+  // 居中标尺
+  for (let i = 0; i <= 20; i++) {
+    const text = Math.ceil(stepText * i);
+    ctx.fillText(text, 335, top + i * stepLine);
+  }
+
+  for (let i = 0; i <= 20; i++) {
+    const text = Math.ceil(stepText * i);
+    ctx.fillRect(350, top + i * stepLine, 10, 1);
+  }
+  // 左侧填补
+  for (let i = 0; i <= 20; i++) {
+    const text = Math.ceil(0 - stepText - stepText * i);
+    ctx.fillText(text, 335, top - stepLine - i * stepLine);
+    ctx.fillRect(350, top - stepLine - i * stepLine, 10, 1);
+  }
+}
 function initEvent(canvas) {
   canvas.on("mouse:wheel", opt => onMouseWheel(opt, canvas));
   canvas.on("mouse:down", opt => onMouseDown(opt, canvas));
@@ -157,14 +223,17 @@ function initEvent(canvas) {
   canvas.on("mouse:up", opt => onMouseUp(opt, canvas));
   canvas.on("selection:created", opt => onSelectionCreated(opt, canvas));
   canvas.on("selection:cleared", opt => onSelectionCleared(opt, canvas));
-  canvas.on("selection:updated", opt => onSelectionUpdated(opt, canvas));
+  canvas.on("selection:updated", opt => (opt, canvas));
+  canvas.on("after:render", opt => {
+    initRuler(canvas);
+  });
 }
 function initClipPath(canvas) {
   const { containerObj, container } = casStore;
   const clipPath = new fabric.Rect({
     fill: container.fill,
-    width: container.w * container.scale,
-    height: container.h * container.scale,
+    width: containerObj.width,
+    height: containerObj.height,
     top: containerObj.top,
     left: containerObj.left
   });
@@ -440,6 +509,8 @@ function nextLayer() {
       justify-content: center;
       align-items: center;
       position: relative;
+      #cas {
+      }
     }
   }
 }

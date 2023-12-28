@@ -2,7 +2,7 @@
  * @Author: 陈三石
  * @Date: 2023-12-06 14:33:03
  * @LastEditors: 陈三石
- * @LastEditTime: 2023-12-15 09:45:21
+ * @LastEditTime: 2023-12-27 09:29:30
  * @Description: 'file content'
 -->
 <template>
@@ -32,9 +32,9 @@ const casStore = useCanvasStore();
 let zoom = 0.03;
 const sizes = [
   { w: 900, h: 1200, scale: 0.6 },
-  { w: 1200, h: 900, scale: 0.8 },
+  { w: 1200, h: 900, scale: 0.6 },
   { w: 1080, h: 1920, scale: 0.4 },
-  { w: 1280, h: 860, scale: 0.8 },
+  { w: 1280, h: 860, scale: 0.6 },
   { w: 860, h: 1280, scale: 0.6 }
 ];
 const currSize = ref(0);
@@ -52,10 +52,21 @@ function changeSize(item, index) {
   rect.center();
   casStore.containerObj = markRaw(rect);
   casStore.container = item;
-  console.log(casStore.BGUrl);
   if (casStore.BGUrl) {
     importUrl(casStore.BGUrl);
   }
+  initClipPath();
+}
+function initClipPath() {
+  const { containerObj, container, canvas } = casStore;
+  const clipPath = new fabric.Rect({
+    fill: container.fill,
+    width: containerObj.width,
+    height: containerObj.height,
+    top: containerObj.top,
+    left: containerObj.left
+  });
+  canvas.clipPath = clipPath;
 }
 function importUrl(url) {
   const { canvas, container, containerObj } = casStore;
