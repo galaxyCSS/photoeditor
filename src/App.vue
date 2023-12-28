@@ -2,7 +2,7 @@
  * @Author: 陈三石
  * @Date: 2023-12-06 10:49:12
  * @LastEditors: 陈三石
- * @LastEditTime: 2023-12-28 10:44:43
+ * @LastEditTime: 2023-12-28 11:17:55
  * @Description: 'file content'
 -->
 <template>
@@ -131,6 +131,7 @@ function init() {
     height: canvasBoxRef.value.offsetHeight
   });
   canvas.zoom = 1;
+  canvas.selection = false;
   casStore.canvas = markRaw(canvas);
   initEvent(canvas);
   initSize(canvas);
