@@ -2,7 +2,7 @@
  * @Author: 陈三石
  * @Date: 2023-12-08 13:46:21
  * @LastEditors: 陈三石
- * @LastEditTime: 2023-12-22 15:14:45
+ * @LastEditTime: 2023-12-28 10:47:38
  * @Description: 'file content'
 -->
 <template>
@@ -18,12 +18,13 @@
 <script setup>
 import SvgIcon from "@/components/SvgIcon.vue";
 import { useCanvasStore } from "@/store/modules/canvas";
+import util from "@/utils/util";
 import { markRaw } from "vue";
 const casStore = useCanvasStore();
 function createText() {
   const { canvas } = casStore;
   let text = new fabric.Textbox("我是文字", {
-    fill: "#333",
+    fill: util.getRandomColor(),
     originX: "center",
     originY: "center"
   });
