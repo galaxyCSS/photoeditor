@@ -7,9 +7,6 @@
       <div class="item" @click="createShape('triangle')">
         <svg-icon iconname="xingzhuang-sanjiaoxing"></svg-icon>
       </div>
-      <div class="item" @click="createShape('ellipse')">
-        <svg-icon iconname="tuoyuanxing"></svg-icon>
-      </div>
       <div class="item" @click="createShape('circle')">
         <svg-icon iconname="yuanxingweixuanzhong"></svg-icon>
       </div>
