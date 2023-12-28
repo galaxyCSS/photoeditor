@@ -2,7 +2,7 @@
  * @Author: 陈三石
  * @Date: 2023-12-06 10:49:12
  * @LastEditors: 陈三石
- * @LastEditTime: 2023-12-27 14:57:44
+ * @LastEditTime: 2023-12-28 09:59:22
  * @Description: 'file content'
 -->
 <template>
@@ -96,7 +96,6 @@ const leftSlideVis = ref(false);
 const rightSlideVis = ref(false);
 const canvasBoxRef = ref();
 const casRef = ref();
-const rulerSize = 30;
 
 const controlType = computed(() => {
   if (casStore.selectedObj.length === 0) {
@@ -152,13 +151,14 @@ function initSize(canvas) {
 function initRuler() {
   initRulerBG();
   initXRulerMark();
+  initYRulerMark();
 }
 function initRulerBG() {
   const { canvas } = casStore;
   const ctx = canvas.getContext();
   ctx.fillStyle = "#fff";
-  ctx.fillRect(0, 0, canvas.width, rulerSize);
-  ctx.fillRect(300, 0, rulerSize, canvas.width);
+  ctx.fillRect(0, 0, canvas.width, 30);
+  ctx.fillRect(300, 0, 60, canvas.width);
 }
 function initXRulerMark() {
   const { canvas, container } = casStore;
@@ -169,7 +169,7 @@ function initXRulerMark() {
   const stepText = container.w / count;
   const ctx = canvas.getContext();
   ctx.beginPath();
-  ctx.fillStyle = "red";
+  ctx.fillStyle = "#333";
   ctx.textBaseline = "top";
   ctx.textAlign = "center";
   // 居中标尺
@@ -185,6 +185,37 @@ function initXRulerMark() {
     ctx.fillRect(left - stepLine - i * stepLine, 20, 1, 10);
   }
 }
+function initYRulerMark() {
+  const { canvas, container } = casStore;
+  let width = container.w * container.scale * canvas.zoom;
+  let height = container.h * container.scale * canvas.zoom;
+  let left = (canvas.width - width) / 2;
+  let top = (canvas.height - height) / 2;
+  const stepLine = 90;
+  const count = height / stepLine;
+  const stepText = container.h / count;
+  const ctx = canvas.getContext();
+  ctx.beginPath();
+  ctx.fillStyle = "#333";
+  ctx.textBaseline = "top";
+  ctx.textAlign = "center";
+  // 居中标尺
+  for (let i = 0; i <= 20; i++) {
+    const text = Math.ceil(stepText * i);
+    ctx.fillText(text, 335, top + i * stepLine);
+  }
+
+  for (let i = 0; i <= 20; i++) {
+    const text = Math.ceil(stepText * i);
+    ctx.fillRect(350, top + i * stepLine, 10, 1);
+  }
+  // 左侧填补
+  for (let i = 0; i <= 20; i++) {
+    const text = Math.ceil(0 - stepText - stepText * i);
+    ctx.fillText(text, 335, top - stepLine - i * stepLine);
+    ctx.fillRect(350, top - stepLine - i * stepLine, 10, 1);
+  }
+}
 function initEvent(canvas) {
   canvas.on("mouse:wheel", opt => onMouseWheel(opt, canvas));
   canvas.on("mouse:down", opt => onMouseDown(opt, canvas));
@@ -192,7 +223,7 @@ function initEvent(canvas) {
   canvas.on("mouse:up", opt => onMouseUp(opt, canvas));
   canvas.on("selection:created", opt => onSelectionCreated(opt, canvas));
   canvas.on("selection:cleared", opt => onSelectionCleared(opt, canvas));
-  canvas.on("selection:updated", opt => onSelectionUpdated(opt, canvas));
+  canvas.on("selection:updated", opt => (opt, canvas));
   canvas.on("after:render", opt => {
     initRuler(canvas);
   });
