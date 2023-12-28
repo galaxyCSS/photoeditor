@@ -2,7 +2,7 @@
  * @Author: 陈三石
  * @Date: 2023-12-06 10:49:12
  * @LastEditors: 陈三石
- * @LastEditTime: 2023-12-28 09:59:22
+ * @LastEditTime: 2023-12-28 10:44:43
  * @Description: 'file content'
 -->
 <template>
@@ -223,7 +223,7 @@ function initEvent(canvas) {
   canvas.on("mouse:up", opt => onMouseUp(opt, canvas));
   canvas.on("selection:created", opt => onSelectionCreated(opt, canvas));
   canvas.on("selection:cleared", opt => onSelectionCleared(opt, canvas));
-  canvas.on("selection:updated", opt => (opt, canvas));
+  canvas.on("selection:updated", opt => onSelectionUpdated(opt, canvas));
   canvas.on("after:render", opt => {
     initRuler(canvas);
   });
