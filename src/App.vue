@@ -2,7 +2,7 @@
  * @Author: 陈三石
  * @Date: 2023-12-06 10:49:12
  * @LastEditors: 陈三石
- * @LastEditTime: 2023-12-28 13:57:13
+ * @LastEditTime: 2023-12-28 17:02:56
  * @Description: 'file content'
 -->
 <template>
@@ -97,6 +97,8 @@ const rightSlideVis = ref(false);
 const canvasBoxRef = ref();
 const casRef = ref();
 
+let xRect;
+let yRect;
 const controlType = computed(() => {
   if (casStore.selectedObj.length === 0) {
     return "";
@@ -308,6 +310,28 @@ function onMouseDown(opt, canvas) {
     canvas.lastPosX = evt.offsetX;
     canvas.lastPosY = evt.offsetY;
   }
+  if (evt.offsetX >= 360 && evt.offsetY <= 25) {
+    canvas.isDraggingXLine = true;
+    xRect = new fabric.Rect({
+      top: 0,
+      left: 0,
+      fill: "red",
+      width: canvas.width,
+      height: 1
+    });
+    canvas.add(xRect);
+  }
+  if (evt.offsetX >= 310 && evt.offsetX <= 350 && evt.offsetY >= 30) {
+    canvas.isDraggingYLine = true;
+    yRect = new fabric.Rect({
+      top: 0,
+      left: 0,
+      fill: "red",
+      width: 1,
+      height: canvas.height
+    });
+    canvas.add(yRect);
+  }
 }
 
 function onMouseMove(opt, canvas) {
@@ -320,11 +344,28 @@ function onMouseMove(opt, canvas) {
     canvas.lastPosX = evt.offsetX;
     canvas.lastPosY = evt.offsetY;
   }
+  if (canvas.isDraggingXLine) {
+    renderXLine(opt);
+  }
+  if (canvas.isDraggingYLine) {
+    renderYLine(opt);
+  }
 }
-
+function renderXLine(opt) {
+  const { canvas } = casStore;
+  xRect.set("top", opt.e.offsetY);
+  canvas.requestRenderAll();
+}
+function renderYLine(opt) {
+  const { canvas } = casStore;
+  yRect.set("left", opt.e.offsetX);
+  canvas.requestRenderAll();
+}
 function onMouseUp(opt, canvas) {
   canvas.setViewportTransform(canvas.viewportTransform);
   canvas.isDragging = false;
+  canvas.isDraggingYLine = false;
+  canvas.isDraggingXLine = false;
 }
 function onMouseWheel(opt, canvas) {
   let delta = opt.e.deltaY;
