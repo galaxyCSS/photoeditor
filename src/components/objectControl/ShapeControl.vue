@@ -2,7 +2,7 @@
  * @Author: 陈三石
  * @Date: 2023-12-07 15:44:50
  * @LastEditors: 陈三石
- * @LastEditTime: 2023-12-16 09:23:21
+ * @LastEditTime: 2023-12-28 11:18:55
  * @Description: 'file content'
 -->
 <template>
@@ -40,16 +40,6 @@
       <div class="item">
         <span class="label">设置圆角</span>
         <div class="slider-bar"><el-slider size="small" :model-value="state.rxry" :max="20" @input="radiusChange" /></div>
-      </div>
-      <div class="item">
-        <span class="label">旋转角度</span>
-        <div class="slider-bar"><el-slider size="small" :model-value="state.angle" :max="360" @input="angleChange" /></div>
-      </div>
-      <div class="item">
-        <span class="label">设置缩放</span>
-        <div class="slider-bar">
-          <el-slider size="small" :model-value="state.scale" :min="0.1" :max="5" @input="scaleChange" />
-        </div>
       </div>
     </div>
     <div class="options">

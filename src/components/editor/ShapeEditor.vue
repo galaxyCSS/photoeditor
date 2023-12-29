@@ -7,9 +7,6 @@
       <div class="item" @click="createShape('triangle')">
         <svg-icon iconname="xingzhuang-sanjiaoxing"></svg-icon>
       </div>
-      <div class="item" @click="createShape('ellipse')">
-        <svg-icon iconname="tuoyuanxing"></svg-icon>
-      </div>
       <div class="item" @click="createShape('circle')">
         <svg-icon iconname="yuanxingweixuanzhong"></svg-icon>
       </div>
@@ -21,6 +18,7 @@
 import { markRaw } from "vue";
 import SvgIcon from "@/components/SvgIcon.vue";
 import { useCanvasStore } from "@/store/modules/canvas";
+import util from "@/utils/util";
 const casStore = useCanvasStore();
 let helpLine = {
   ltLine: null,
@@ -47,9 +45,9 @@ function createShape(shape) {
   }
 }
 function createRectShape() {
-  const { canvas } = casStore;
+  const { canvas, container } = casStore;
   const rect = new fabric.Rect({
-    fill: "#1890ff",
+    fill: util.getRandomColor(),
     width: 100,
     height: 100,
     originX: "center",
@@ -74,7 +72,7 @@ function createTriangleShape() {
   const triangle = new fabric.Triangle({
     width: 80,
     height: 100,
-    fill: "#1890ff",
+    fill: util.getRandomColor(),
     originX: "center",
     originY: "center"
   });
@@ -96,7 +94,7 @@ function createCircleShape() {
   const { canvas } = casStore;
   const circle = new fabric.Circle({
     radius: 50,
-    fill: "#1890ff",
+    fill: util.getRandomColor(),
     originX: "center",
     originY: "center"
   });
@@ -117,7 +115,7 @@ function createCircleShape() {
 function createEllipseShape() {
   const { canvas } = casStore;
   const ellipse = new fabric.Ellipse({
-    fill: "#1890ff",
+    fill: util.getRandomColor(),
     rx: 70,
     ry: 30,
     originX: "center",
